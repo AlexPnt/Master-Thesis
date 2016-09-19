@@ -1,0 +1,229 @@
+% Chapter 3
+\chapter{State of the Art} % Main chapter title
+%\epigraph{A fancy quote}{Me}
+
+\label{art} % For referencing the chapter elsewhere, use \ref{Chapter2} 
+\lhead{Chapter 3. \emph{State of the Art}} % This is for the header on each page - perhaps a shortened title
+
+In this chapter we perform a review of the literature, i.e., a review of the techniques most used to solve text classification problems. This chapter is divided into two main sections. In the first section we explore techniques used in the scientific literature. We then proceed to the second section where we give a technological review. This last section shows the difference between studying practical applications that solve real-world problems and theoretical models of the reality.
+
+%----------------------------------------------------------------------------------------
+
+\section{Scientific Overview}
+
+Over the past decades, a large number of techniques has been applied to the automatic classification of text with varied success. Although there is no accepted solution yet that can globally solve the problem, there are many interesting approaches to tackle the problem. In this section we make a short survey of different approaches. We also present some standard data sets useful to determine which techniques are in general the best computational methods. 
+
+
+\subsection{Approaches to Social Media Text Classification}
+
+Huge quantities of information are spread everyday through social networks.
+Acknowledging the fact that users, alone, are unable to deal with so much information, automatic methods have been developed to classify social media posts according to different aspects~(e.g. sentiment~\citep{Preslav2013SemEval}, categories~\citep{Bharath2010TwitterFiltering}, mentioned events~\citep{Ritter2012OpenDomain},popularity~\citep{Bharath2010TwitterFiltering,Fernandes2015PredictingPopularity} or virality~\citep{guerinietal2011TextVirality} of the content).
+The previous methods can be used by content-based recommender systems \citep{lops2011recommendersystems}, and would hopefully help users to organize their content and filter unwanted information.
+
+Our work falls in the previous category of automatic approaches for the classification of social media text, in this case, focusing on its relevance to a wide audience, from a journalistic point of view. Previous work has explored the virality of social network posts~\citep{guerinietal2011TextVirality} and attempted to define certain phenomena in their messages, namely: virality~(number of people that access it in a given time interval), appreciation~(how much people like it), spreading~(how much people share it), white and black buzz~(how much people tend to comment it in a positive or negative mood), raising discussion~(the ability to induce discussion among users) and controversy~(the ability to split the audience into those that are pro and those against).
+Some of the previous phenomena might also have impact on the relevance of a post.
+
+After defining those phenomena\citep{guerinietal2011TextVirality}, the same authors developed a SVM-based classifier for automatically predicting them in posts of the social platform Digg, based only on the lemmas of the content words in the story and snippet.
+They reached $F_1$ measures of 0.78 for appreciation, 0.81 for buzz, 0.70 for controversiality, and 0.68 for raising-discussing.
+
+Others have also relied on a SVM to classify consumer reviews as helpful or not~\citep{Ching2013SocialNLP}.
+For that purpose, 1 to 3-grams were exploited, together with the length of the review, its degree of detail, the given rating, and specific comparison-related keywords. With the best configuration, their accuracy reached 0.72.
+
+The phenomena of popularity has some connections both with virality and relevance.
+In fact, the prediction of popularity of web content has been surveyed elsewhere~\citep{Tatar2014PredictPopularity}.
+Most research on the topic has focused on the interactions of users~(e.g. reads, appreciation, comments, shares)~\citep{Szabo2010PredictPopularity}. Yu et al. \citep{Yu2011PopularityMarketingMessages} used SVMs and Naive Bayes classifiers to predict the popularity of social marketing messages, achieving accuracies of 0.72 and 0.68, respectively. The used data was gathered from Facebook posts produced by top restaurant chains and labeled as ``popular'' or ``not popular'' according to the number of likes.  The feature sets used consisted simply of word vectors using bag-of-words representations. In fact, they found that words such as ``win'', ``winner'', ``free'' or ``fun'' were rated as less popular. However, words such as ``try'', ``coffee'', ``flavors'' or ``new'' were  rated as more popular. To rank these words, they used a SVM classifier which used only boolean features representing the presences or absences of the words. Such words were found to be the most discriminant when classifying content as popular or not popular.   
+
+Based on the category of a news article, subjectivity of language used, mentioned named entities and the source of the publisher, Bandari et al.~\citep{Bandari2012ForecastingPopularity} achieved an overall accuracy of 0.84 on predicting the number of tweets that would mention it. An acceptable popularity measure is the number of times a publication is mentioned in other publications. Especially based on the features of an author of a tweet~(e.g. followers, favorites), Petrovic et al.~\citep{Petrovic2011MsgProgagation} predicted whether it would be retweeted or not, with an F$_1$ measure of about 0.47. Hong et al. \citep{Hong2011PredictingTwitter} also addressed the same problem achieving an F$_1$ score of 0.60. They used content features such as TF-IDF scores and LDA topic distributions; topological features such as PageRank scores and reciprocal links; temporal features such as time differences between consecutive tweets, average time difference of consecutive messages and average time for a message to be retweeted and finally meta information features such as whether a message has been retweeted before or the total number of tweets produced by an user. 
+
+Fernandes et al.~\citep{Fernandes2015PredictingPopularity} exploited a large set of features to predict the popularity of Mashable news articles, based on the number of times they would be shared.
+Considered features included the length of the article, its title and its words, links, digital media content, time of publication, earlier popularity of referenced news, keywords of known popular articles, and several NLP features, such as topic, subjectivity and polarity.
+The best F$_1$ measure~(0.69) and accuracy~(0.67) was achieved with a Random Forest classifier.
+
+Only based on the tweets content, tweets mentioning trending topics were classified as related or unrelated (e.g.~spam) with a F$_1$ score of 0.79, using a C4.5 classifier, and 0.77, using a Naive Bayes, which also takes less time to train~\citep{Irani2010TrendStuff}. Lee et al. \cite{Lee2011TrendingTopic} also address the problem of assigning trending topic to categories. By using TF-IDF word vector counts, they achieved accuracies of 0.65 and 0.61 by using Naive Bayes and SVM classifiers, respectively.     
+In order to detect the context from which certain tweets belong, Genc et al. \citep{Genc2011ClassifyingTweets} gathered a set of tweets belonging to three different categorical events and tried to classify them by finding clusters of similar tweets, achieving an average accuracy of 0.86. In order to compute the similarity between tweets they used different methods such as string edit distances and distances between associated Wikipedia articles (for each tweet), as indicators of the distance between two tweets. This distance was computed as the shortest path lenght, between the two wikipedia articles, in the categorical data graph from Wikipedia.
+
+The limitations of traditional bag-of-word classification models in microblogging platforms have been pointed out, due to the short length of documents~\cite{Bharath2010TwitterFiltering}.
+Alternatively, other features can be used, including the author's name, presence of shortening of words and slangs, time-event phrases, opinioned words, emphasis on words, currency and percentage signs and user mentions at the beginning and within the post.
+The previous features were used to classify tweets into a set of categories (News, Events, Opinions, Deals, and Private Messages) with an accuracy of 0.95. When combined with a bag-of-words, there are no improvements. In fact, the author's name seemed to be the most relevant feature. 
+
+Figueira et al. \citep{Figueira2016RelevanceDetection} used a reduced set of features in order to classify social media posts from Google+, Youtube and Twitter, according to their relevance. The feature set included normalized length of posts, number of occurrences of typical certain words, such as swear words, the use of excessive punctuation and smileys/emoticons. They also used two customized bag-of-words that are more likely to appear in news and do not appear in chat and vice-versa, achieving a final F$_1$ score of 0.68.
+
+Frain and Wubben \citep{Frain2016SatiricLR} developed a satirical dataset which contained articles labeled as Satire or Non Satire. Using features like profanity amounts, punctuation amounts, positive and negative word counts, bag-of-words models using unigrams and bigrams they achieved a F$_1$ score of 0.89 using support vector classifiers.	
+
+Liparas et al.\citep{Liparas2014NewsClassification} address the problem of classifying web pages by topic (Business, Lifestyle, Science or Sports), by extracting textual and visual features. Textual features included N-grams, ranging from unigrams to four-grams. Using random forests, they obtained an average F$_1$ score of 0.85 and an accuracy of 0.86. Kinsella et al. \citep{Kinsella2011TopicClassification} also investigate this problem by using additional metadata retrieved from hyperlinks. They used text from message boards as the object of analysis. By using a simple bag-of-words representation as the feature vectors, they classified each concatenation of a post plus the metadata retrieved from external links with a Multnominal Naive Bayes obtaining an F$_1$ score of 0.90, showing a clear improvement when using only the content of the message (0.85).  
+
+Although with a different goal, the previous works have focused on classifying social media posts automatically, according to some criteria, some of which~(virality, helpfulness, popularity, etc) related to our target goal, relevance, due to their context-dependence and ambiguous nature.
+Our approach is also similar, as we rely on the extraction of a set of features from each post and then apply a set of algorithms to learn a classifier based on those features. In our case, only text and linguistic-related features are used.
+
+\section{Technological Overview}
+In the following sections we present a small survey of practical tools currently available and available datasets. There is a wide range of frameworks and libraries available that can be used to process languages and extract information. Usually they can be divided in general purpose tools or systems developed in research contexts where a specific problem is addressed. 
+
+\subsection{Common Data Sets}
+
+Many different methods were developed to solve linguistic tasks. In order to evaluate the performance of the developed systems and to determine the best approaches, it is important to have the same terms of comparison like annotated data ready to test and use. This way, the comparison of results is more reliable since the systems are tested in the same settings. Therefore, the need for standard formats that allow to replicate experiments, easy exchange of data and testing of algorithms on standard corpora is an important issue.\\
+Many corpora have been developed in order to express in a clear and precise way real-life data. Currently there are some datasets commonly used by the NLP community, like large collections of annotated text and tree banks. We summarize the most popular available collections usually used for text categorization and machine learning applications:
+
+\begin{itemize}
+	%\item \textbf{\href{https://catalog.ldc.upenn.edu/byyear.jsp}{LDC}} - Each year, the Linguistic Data Consortium provides a variety of different corpora in different languages, ranging from data made available in Conferences on Natural Language Learning (CoNLL), treebanks,  broadcast news, among others.
+    %\item \textbf{\href{http://catalog.elra.info}{ELRA}} -  ELRA provide many language resources like corpora, lexicons and terminology written in a wide range of languages.
+    %\item \textbf{\href{http://catalog.elra.info}{ICAME}} - ICAME is an archive of many English text corpora such as the Brown Corpus and the Lancaster Corpus.
+    \item \textbf{\href{http://trec.nist.gov/data/reuters/reuters.html}{Reuters Corpora}} - The Reuters corpora, distributed by NIST, is a large collection of news stories used in development and testing of NLP and ML systems.
+    \item \textbf{\href{http://ota.ox.ac.uk/catalogue/index.html}{OTA}} - OTA is a collection of literary English texts that can be used as linguistic corporas.
+    \item \textbf{\href{http://www.elsnet.org/resources/eciCorpus.html}{ECI/MCI}} - The European Corpus Initiative offers a great collection of texts written in many different languages. They offer these resources for research purposes at low cost.
+    \item \textbf{\href{http://www.elsnet.org/resources/eciCorpus.html}{ICE}} - ICE  is a large collection of English texts with many regional varieties. Each corpus follows a well-defined corpus design as well common grammatical and textual annotations.
+    \item \textbf{\href{http://qwone.com/~jason/20Newsgroups}{20 Newsgroups Data Set}} - The 20 newsgroups data set is a well-known collection. It consists of a large number of documents partitioned across different categories.
+    \item \textbf{\href{http://www.cs.cmu.edu/~webkb}{WebKB Collection}} - The WebKB project aims to translate the the web content to a symbolic representation better understandable by computers. They provide large collections of web pages classified under a set of categories. 
+    \item \textbf{\href{http://quod.lib.umich.edu/m/micase/}{MICASE}} - The MICASE collection contains many texts of spoken English, categorized under the speaker attributes (Position, Status, First language) and the transcript attributes (Interactivity, Discipline, Event).
+    \item \textbf{\href{http://www.ling.upenn.edu/hist-corpora/PPCME2-RELEASE-3/index.html}{PPCME}} - The PPCME offers large collections of simple text, PoS tagged text and syntactically annotated text. The text comes from samples from the British English prose across the history and its annotations are reviewed by expert human annotators.
+    \item \textbf{\href{http://www.cs.cmu.edu/~webkb}{CoNLL Data Sets}} - The ConNLL yearly conference usually provides annotated train and test data sets for its shared tasks. These shared tasks usually include annotated data related to the chosen topic such as grammatical correction, coreference, syntactic and semantic dependencies, name entity recognition, chunking, among others.
+    \item \textbf{\href{http://trec.nist.gov/data/tweets}{Tweets2011 Corpus}} - Tweets2011 was a microblog track from TREC conference and they used data provided by Twitter for testing. This data contains millions of tweets sampled across two weeks, containing both important and spam messages.
+    \item \textbf{\href{http://clic.cimec.unitn.it/amac/twitter_ngram}{RTC Corpora}} - The Rovereto Twitter Corpus is a collection of millions of annotated tweets. Each tweets is classified by the genre of the author.
+    \item \textbf{\href{http://mpqa.cs.pitt.edu/corpora}{MPQA Corpora}} -The MPQA is a set of manually annotated collections such as opinion corpus, debate corpus, arguing corpus and good/bad corpus.
+    \item \textbf{\href{http://nlp.uned.es/replab2013}{RepLab}} - In recent years, RepLab proposed an evaluation framework for providing and evaluating automatic tools for the problem of Online Reputation management. The RepLab 2013 dataset consists of manually annotated tweets, gathered from the 1st June 2012 till the 31st Dec 2012, related to a selected set of entities. This data is part of a competitive monitoring task, consisting of four main evaluation tasks, such as: Filtering tweets according to their relation to a specific entity (related/unrelated), polarity of the tweet (positive, negative or neutral) in relation to a particular entity, topic detection and topic priority \citep{replab2013overview}. 
+\end{itemize}
+
+\subsection{Related Comparisons}
+
+Gonz{\'a}lez \citep{gonzalez2015Colloquialanalysis} highlights the particular characteristics of Twitter messages that make common NLP tasks challenging, such as irregular grammatical structure, language variants and styles, out-of-vocabulary words or onomatopeias, reminding the fact that there is still a lack of gold standards regarding colloquial texts, especially for less-resourced languages. Therefore, preprocessing techniques are usually employed as an initial step. Clark \citep{Clark2003preprocessing} developed a tool that applies a set of tasks to noisy text coming from Usenet news. This tool follows an integrated approach where it identifies boundaries between tokens and sentences, corrects spelling mistakes and identifies wrong capitalizations. Wong et al. \citep{Wong2008Dirtytexts} developed a spelling correction preprocessing system as part of a system that builds an ontololgy from text coming from chat records. Besides, this system also expands abbreviations and corrects improper casing. In order to achieve this, the system tokenizes the input text and computes a sorted list of corrected suggestions for each erroneous word identified by the system.
+
+Besides comparing different NLP tools, we also analyze their performance in different types of text, some more formal, from newspapers, and some less formal, from Twitter. Similar comparisons, though with different goals, were performed by others. For instance, in order to combine different NER tools and improve recall, Dlugolinsk{\'y} et al. \citep{Dlugolinsk2013CombiningNER} assessed selected tools for this task in the dataset of the MSM2013 task.
+This included the comparison of well-known tools such as ANNIE\footnote{\url{https://gate.ac.uk/sale/tao/splitch6.html\#chap:annie}}, OpenNLP\footnote{\url{https://opennlp.apache.org}}, Illinois Named Entity Tagger\footnote{\url{https://cogcomp.cs.illinois.edu/page/software_view/NETagger}} and Wikifier\footnote{\url{https://cogcomp.cs.illinois.edu/page/software_view/Wikifier}}, OpenCalais\footnote{\url{http://www.opencalais.com}}, Stanford Named Entity Tagger\footnote{\url{http://nlp.stanford.edu/software/CRF-NER.shtml}} and Wikipedia Miner\footnote{\url{http://wikipedia-miner.cms.waikato.ac.nz}}.
+
+Additional work by Dlugolinsk{\'y} et al. \citep{dlugolinsky2013evaluation} used the same evaluation dataset, adding LingPipe\footnote{\url{http://alias-i.com/lingpipe}} to the set of assessed tools. The authors used GATE\footnote{\url{https://gate.ac.uk}} as the evaluation framework considering strict and lenient matchings, depending on whether responses were fully or partially correct, respectively. OpenCalais achieved the best $F_1$ scores for the LOC (0.74), MISC (0.27) and ORG(0.56) entities while Illinois NER performed better on the PER (0.79) entity. However, LingPipe got the weakest $F_1$ scores in the LOC (0.30), ORG (0.07) and PER (0.35) entities. Stanford NER was the weakest in identifying MISC (0.05) entities.
+
+Godin et al. \citep{godin2013leveraging} also used the MSM2013 challenge corpus and performed similar evaluations oriented to NER web services, such as AlchemyAPI\footnote{\url{http://www.alchemyapi.com}}, DBpedia Spotlight\footnote{\url{https://github.com/dbpedia-spotlight/dbpedia-spotlight}}, OpenCalais, and Zemanta\footnote{\url{http://www.zemanta.com}}. Since the evaluated services use complex ontologies, a mapping between the obtained ontologies and entity types was performed, with good $F_1$ scores when using AlchemyAPI for the person (0.78) and location (0.74) type entities, and OpenCalais for the organization (0.55) and miscellaneous (0.31) entities.
+Rizzo et al. \citep{rizzo2012nerd} also evaluated web services, such as Lupedia\footnote{\url{http://dbpedia.org/projects/lupedia-enrichment-service}}, Saplo\footnote{\url{http://saplo.com}}, Wikimeta\footnote{\url{https://www.w3.org/2001/sw/wiki/Wikimeta}} and Yahoo Content Analysis (YCA), but with focus on different kinds of well-formed content and varying length, such as TED talks transcripts, New York Times articles and abstracts from research papers. In fact, they evaluated the resulting NER and Disambiguation (NERD) framework, which unified the output results of the aforementioned web services, supporting the fact that tools such as AlchemyAPI, OpenCalais and additionally DBpedia Spotlight perform well in well-formed contents, using formal language. Rizzo et al. also report on the evaluation of datasets with colloquial text, namely Twitter text from the MSM2013 challenge and newspaper text from the CoNLL-2003 Corpus \citep{rizzo2014benchmarking}. They report better NER results when using a combination of the tested tools, achieving $F_1$ results greater than 0.80 on he CoNLL-2003 dataset, for all entity types and $F_1$ results greater than 0.50 on the MSM-2013 dataset, except for the miscellaneous type that obtained results less than 0.30.
+
+Garcia and Gamallo \citep{Garcia2015Slate} report the development of a multilingual NLP pipeline. To assess the performance of the presented tool, they performed experiments with POS-tagging and NER. The POS-tagger performed slightly better than well-known tools such as OpenNLP and Stanford NER, achieving a precision score of 0.94 on the Brown Corpus. On the other hand, the NER module achieved $F_1$ scores of 0.76 and 0.59 on the IEER\footnote{\url{http://www.itl.nist.gov/iad/894.01/tests/ie-er/er_99/er_99.htm}} and SemCor\footnote{\url{http://www.gabormelli.com/RKB/SemCor_Corpus}} Corpus, respectively.\\
+Rodriquez et al. \citep{rodriquez2012comparison} and Atdag and Labatut \citep{atdag2013comparison} compared different NER tools applied to different kinds of text, respectively biographical and OCR texts. Rodriguez et al. used Stanford CoreNLP, Illinois NER, LingPipe and OpenCalais, on a set of Wikipedia biographic articles annotated with person, location, organization and date type entities. Due to the absence of biography datasets, the evaluated corpus was fully designed by the authors, i.e., the evaluated corpus consisted of a series of Wikipedia articles which were annotated with the aforementioned entity types.  Although CoreNLP obtained the best $F_1$ scores~(0.60 and 0.44) in two manually-annotated resources, there was not a tool that outperformed all the others in every entity type. They are rather complementary. Atdag and Labatut evaluated OpenNLP, Stanford CoreNLP, AlchemyAPI and OpenCalais using datasets with the entity types person, location and organization manually annotated. They used data from the Wiener Library, London and King’s College London’s Serving Soldier archive, which consisted of Holocaust survivor testimonies and newsletters written for the crew of H.M.S. Kelly in 1939. Once again, Stanford CoreNLP gave the best overall $F_1$ results (0.90) while OpenCalais only achieved 0.73.
+
+\subsection{A Review of Current Tools}
+\label{nlp_tools}
+
+In order to choose the correct tools for the job, many criteria have to be considered. Usually good systems should be be open source, well-documented, extensible and easy to adapt. Each tool has different features, work under different programming languages and setups or have different learning curves. In the following list we detail common frameworks and libraries used to develop NLP systems and, in some cases integrating them to a machine learning pipeline. They are described and grouped in ``standard'' toolkits, which means they were developed with no specific kind of text in mind, and social network-oriented tools, which aim to be used in short messages from social networks.
+
+\textbf{Standard NLP toolkits:}
+\begin{itemize}
+    \item \textbf{\href{http://www.nltk.org/}{NLTK}} - The NLTK toolkit is a Python library developed within a coursed taught at the University of Pennsylvania with good design goals in mind such as simplicity, modularity and extensibility. The library is divided in independent modules responsible for specific NLP tasks such as tokenization, stemming, tree representations, tagging, parsing and visualization. It also comes bundled with popular corpus samples ready to be read. By default, NLTK uses the Penn Treebank Tokenizer, which uses regular expressions to tokenize the text. Its PoS tagger uses the Penn Treebank tagset and is trained on the Penn Treebank corpus. %with a Maximum Entropy model.
+The Chunker and the NER modules are trained on the ACE corpus. %with a Maximum Entropy model. 
+It also includes modules for text classification, providing methods for feature encoding, selection and standard classifiers \citep{Loper2002NLTK,Bird2006NLTK}.
+
+    \item \textbf{\href{https://opennlp.apache.org}{Apache OpenNLP}} - OpenNLP is a Java library that uses machine learning methods for common natural language tasks, such as tokenization, POS tagging, NER, chunking and parsing. It can be used out-of-the-box since it comes bundled with pre-trained models for different tasks ready for use. Besides, it is extensible, has built-in support of many corpora formats and it is accessible by both application and command line interfaces. Users can also train their own models.% with Perceptron or Maximum Entropy methods, and use them instead. 
+The pre-trained models for English PoS tagging and chunking use the Penn Treebank tagset. The Chunker is trained on the CoNLL-2000 dataset. The pre-trained NER models cover the recognition of persons, locations, organizations, time, date and percentage expressions. A classifier and evaluation metrics are also included.
+
+    \item \textbf{\href{http://stanfordnlp.github.io/CoreNLP}{Stanford CoreNLP}} - The CoreNLP toolkit is a straightforward JAVA pipeline that provides common natural language processing tasks.  CoreNLP was build with simplicity and reliability in mind, i.e., simple to set up run, since users do not need to learn and understand complex installations and procedures seen in other bigger and complex systems, like GATE \citep{Cunningham2002GATE} or UIMA \citep{Ferrucci2004UIMA}. The most supported language is English, but other languages are also available \cite{Manning2014CoreNLP}. Basically, the tool is fed with raw text and afterwards a series of annotator objects add information resulting in a complete language analysis. This pipeline can then easily be integrated in larger systems, as a component, that the user may be developing. The CoreNLP tool performs a Penn Treebank style tokenization and the POS module %is an implementation of the Maximum Entropy model 
+uses the Penn Treebank tagset. The NER %component uses a Conditional Random Field (CRF) model and 
+component uses a model trained on the CoNLL-2003 dataset. 
+    
+    \item \textbf{\href{https://spacy.io}{SpaCy}} - SpaCy is a library used for NLP written in Python/Cython. The main goal is to be a reliable alternative to common toolkits like NLTK and others that usually are more suitable for educational or research purposes. This way, it can be used within industrial environments, like small companies, that usually requires great speed, accuracy, documentation and concise APIs. The fact that is written in Cython (language that compiles to C or C++) makes it faster than other well-known tools. According to recent research SpaCy has one of the fastest systems\citep{honnibal2015spacy,Choi2015DependencyParserComparison}.% However, there seems to be a trade-off with the accuracy of the results \citep{Choi2015DependencyParserComparison}.
+    
+    \item \textbf{\href{http://www.clips.ua.ac.be/pages/pattern}{Pattern}} - The Pattern tool is a Python library that provides modules for web mining, NLP and ML tasks. A common workflow is to use the methods to extract data from the web (using the provided methods to access well-known APIs from common services) and perform some processing on the data afterwards to get results. The goal of the library is not providing methods for a single field but rather a general cross-domain and ease-of-use functionality \citep{Smedt2012Pattern}.
+    
+    \item \textbf{\href{https://gate.ac.uk}{GATE}} - GATE is a well-known architecture and flexible framework used to design and develop natural language applications. It provides baseline methods for language processing, including measurement of its performance and works under open standards like JAVA and XML. The GATE frameworks stands on three types of independent components: Language Resources (corpora, 1exicons), Processing Resources (NLP algorithmic tasks, evaluation, pluggable ML implementations) and Visual Resources. A great characteristic of the GATE framework is that the core system is broken into smaller components that can be used, extended or replaced. The user has a a wide range of possible configurations to work with. Besides, the user can choose to use standard package ANNIE, which already encompasses many common NLP tasks, or choose to create its own set of coupled components to make a new application \citep{Cunningham2002GATE}.
+    \item \textbf{\href{http://uima.apache.org}{UIMA}} - The UIMA framework is a distributed middleware architecture similar to the GATE framework, used to develop NLP analysis engines that deal with large volumes of unstructured data. Originally developed by IBM Research and now maintained by the Apache Software Foundation, UIMA has four main modules: Acquisition, Unstructured Information Analysis (UIA), Structured Information Access (SIA) and Component Discovery (CD). \\ The acquisition module is responsible for gathering data from external sources where web crawlers may employ this functionality. The UIA module is responsible for processing the data through Text Analysis Engines (TAE), similar to the Processing resources in GATE. This module is divided in smaller components, each responsible for a NLP task. Each document is then attached to an analysis report forming a structure called Common Analysis Structure (CAS). The results of the UIA modules provide structured information (indexes, dictionaries, ontologies, etc) for the SIA module, which can then be reused by the UIA module, creating a feedback loop between these two components. This module is further divided into semantic search, structured knowledge access and document metadata access components. Finally, the CD module provides mechanism to find the right component required for a specific task \citep{Ferrucci2004UIMA}.
+    \item \textbf{\href{http://ufal.mff.cuni.cz/treex}{Treex}} - Tree is open-source and modular NLP framework written in Perl. Its formerly purpose was to perform machine translation, but now aims to extend this goal to other NLP tasks, such as tokenization, morphological analysis,  POS  tagging, NER, among others. The Treex framework tries to avoid usual auxiliary tasks common in other applications (reading documentation, compiling, training models, writing scrips for data conversion, etc) by emphasizing on modularity and reusability. The atomic unit of the framework is a block, which is a well-defined routine with an input and an output specification that solves a specific NLP task. This allows the creation of sequence of blocks that are applied to the data and solve a bigger problem. Besides, different combination of blocks, create different possible scenarios solving the same problem in different ways \citep{Popel2010TectoMT}.
+    \item \textbf{\href{http://alumni.media.mit.edu/~hugo/montylingua}{MontyLingua}} - MontyLingua is a natural language processor, written in Python and developed in the MIT media labs, that extracts semantic information from raw input texts, performing other middle tasks in the process, such as tokenization, POS and chunking. A distinctive feature of MontyLingua is that it uses a Penn Treebank Tag Set POS tagger enriched with common sense from \href{http://conceptnet5.media.mit.edu/}{ConceptNet}, a common-sense knowledge base \citep{Liu2004Montylingua, Ling2006MontyLinguaReview}.
+    \item \textbf{\href{http://www.linguastream.org}{LinguaStream}} - LinguaStream is a Java platform for building processing streams, i.e., a set of analysis components, each performing a desired task. A main feature of LinguaStream is that allows the visualization of the design process, i.e., NLP components may be chosen from a "palete" and placed in a processing pipeline. Each chosen component is configurable, that is, has a set of parameters, an input and an output specification. LinguaStream is currently used for research and teaching purposes as an integrated experimentation platform \citep{Bilhaut2006LinguaStream}.
+\end{itemize}
+
+There are many other standard available tools that may be used to solve linguistic problems. %such as  the Python libraries \textbf{\href{http://textblob.readthedocs.org/en/dev}{TextBlob}},  \textbf{\href{https://github.com/proycon/pynlpl}{PyNLPl}}, \textbf{\href{https://github.com/aboSamoor/polyglot}{PolyGlot}} and the JAVA applications \textbf{\href{http://mallet.cs.umass.edu}{MALLET}},\textbf{\href{https://github.com/clir/clearnlp}{ClearNLP}} and \textbf{\href{https://code.google.com/p/mate-tools}{Mate-tools}}, \textbf{\href{http://morphadorner.northwestern.edu/morphadorner}{MorphAdorner}},\textbf{\href{http://alias-i.com/lingpipe}{LingPipe}}. There are also tools developed by research groups such as \textbf{\href{http://www.opener-project.eu}{OpenNER}}, \textbf{\href{http://cogcomp.cs.illinois.edu/page/software}{CCG tools}} or \textbf{\href{http://cistern.cis.lmu.de}{CIS tools}}. Examples of applications written in C/C++ are \textbf{\href{https://github.com/mit-nlp/MITIE}{MITIE}} and  \textbf{\href{http://nlp.lsi.upc.edu/freeling}{Freeling}}. \textbf{\href{https://github.com/spencermountain/nlp_compromise}{NLP Compromise}} is a tool that brings NLP tasks to the browser, i.e., its distributed as a Javascript library ready to be used.  Finally, \textbf{\href{http://factorie.cs.umass.edu/index.html}{FACTORIE}} is a Scala library that provides out-of-the-box NLP processing components including state-of-the-art models for these tasks. \\
+With a wide range of NLP tools, users can choose the right application that satisfies his requirements such as the task at hand or the programming language . Most of the tools are made with good ease-of-use in mind, are open-source and have a free cost.
+
+\textbf{Social Network-Oriented Toolkits:}
+
+Following the fact that standard NLP tools perform poorly on informal and noisy text, some tools aim to address this issue by building a customized NLP pipelines that take in consideration the nature of these types of text. These tools are able to perform tasks such as Tokenization and POS on tweets with greater performance than standard tools trained on news data such as OpenNLP and Standford NLP.
+
+\begin{itemize}
+	\item \textbf{\href{https://github.com/aritter/twitter_nlp}{TwitterNLP}} -  Alan Ritter's TwitterNLP is a Python library that offers a NLP pipeline for performing Tokenization, POS, Chunking and NER. The authors reduced the problem of dealing with noisy texts by developing a system based on a set of features extracted from Twitter-specific POS taggers, a dedicated shallow parsing logic, and the use of gazetteers generated from entities in the Freebase knowledge base, that best match the fleeting nature of informal texts \citep{Ritter2011TwitterNLP}.
+
+	\item \textbf{\href{http://www.cs.cmu.edu/~ark/TweetNLP}{CMU's TweetNLP}} - CMU's TweetNLP is Java tool that provides a Tokenizer and a POS Tagger with available models, trained with a CRF model in Twitter data, manually annotated by its authors. In addition to the typical syntactic elements of a sentence, TweetNLP identifies content such as mentions, URLs, and  emoticons \citep{Gimpel2011TweetNLP}.
+     
+	 \item \textbf{\href{https://gate.ac.uk/wiki/twitie.html}{TwitIE}} - The TwitIE pipeline is a plugin for the GATE framework specially tailored for social media content, i.e., brief noisy text that usually contains many mistakes, provide little context, make use of emoticons and tend not to follow grammatical rules. The main goal of TwittIE is to extract named entities from tweets since this is usually a hard problem to process in social media content because of its inner characteristics. On the other hand, NER is a very well studied problem for longer and well-formed texts. TwitIE reuses a set of processing components from GATE, called  ANNIE, namely the sentence splitter and the gazetteer lists (lists of cities, organizations, days, etc), but adapts the others to the Twitter kind of text, supporting language identification, Tokenization, normalization, PoS tagging and NER. The TwitIE tokenizer follows the same tokenization scheme as TwitterNLP. The PoS tagger uses an adptation of the Stanford tagger, trained on tweets with the Penn Tree Bank tagset, with additional tags for retweets, URLs, hashtags and user mentions \cite{Bontcheva2013Twitie}.
+\end{itemize}
+
+\subsection{Available Features in Current Tools}
+
+The presented solutions share some common characteristics and differ and innovate in others, offering different degrees of support for feature extraction. Table \ref{tab:summary_tech_art} shows a summary of the features presented.
+
+\begin{landscape}
+\begin{table}[H]
+\centering
+%\begin{adjustbox}{width=0.6\textwidth}
+\tiny
+\rotatebox{0}{
+%\resizebox{\textwidth}{!}{%
+\begin{tabu}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\multirow{2}{*}{\backslashbox{System}{Feature}} & \multirow{2}{*}{Tokenization} & \multirow{2}{*}{\parbox{1.5cm}{Collocations/ Ngrams}} & \multirow{2}{*}{\parbox{1.5cm}{Morphological Analysis}} & \multirow{2}{*}{POS} & \multirow{2}{*}{NER} & \multirow{2}{*}{Chunking} & \multirow{2}{*}{Parsing} & \multirow{2}{*}{\parbox{1.5cm}{Coreference Resolution}} & \multirow{2}{*}{\parbox{1.5cm}{Sentiment Analysis}} & \multirow{2}{*}{\parbox{1.5cm}{Open IE}} & \multirow{2}{*}{Corpora} & \multirow{2}{*}{Classification} & \multirow{2}{*}{Evaluation} \\
+
+	& & & & & & & & & & & & & \\
+\hline
+	NLTK & \ccheck & \ccheck  & \ccheck  & \ccheck  & \ccheck  & \ccheck  & \ccheck  & \xcheck  & \xcheck & \xcheck  & \ccheck & \ccheck & \ccheck  \\
+\hline
+	OpenNLP & \ccheck & \ccheck  & \ccheck  & \ccheck  & \ccheck  & \ccheck  & \ccheck  & \ccheck  & \xcheck & \xcheck  & \ccheck & \ccheck & \ccheck \\
+\hline
+	CoreNLP & \ccheck & \ccheck  & \ccheck  & \ccheck  & \ccheck  & \ccheck  & \ccheck  & \ccheck  & \ccheck & \ccheck  & \ccheck & \ccheck & \ccheck \\
+\hline
+	SpaCy & \ccheck & \xcheck  & \ccheck  & \ccheck  & \ccheck  & \ccheck  & \ccheck  & \xcheck  & \xcheck & \xcheck  & \ccheck & \xcheck & \xcheck \\
+\hline
+	Pattern& \ccheck & \ccheck  & \ccheck  & \ccheck  & \xcheck  & \ccheck  & \ccheck  & \xcheck  & \ccheck & \xcheck  & \ccheck & \ccheck & \ccheck \\
+\hline
+	GATE& \ccheck & \ccheck  & \ccheck  & \ccheck  & \ccheck  & \ccheck  & \ccheck  & \ccheck  & \ccheck & \ccheck  & \ccheck & \ccheck & \ccheck \\
+\hline
+	TwitIE & \ccheck & \xcheck  & \xcheck  & \ccheck  & \ccheck  & \xcheck  & \xcheck  & \xcheck  & \xcheck & \xcheck  & \xcheck & \xcheck & \xcheck \\
+\hline
+	 UIMA & \ccheck & \ccheck  & \ccheck  & \ccheck  & \ccheck  & \ccheck  & \ccheck  & \ccheck  & \ccheck & \ccheck  & \ccheck & \ccheck & \ccheck \\
+\hline
+	 Treex & \ccheck & \xcheck  & \ccheck  & \ccheck  & \ccheck  & \xcheck  & \ccheck  & \xcheck  & \xcheck & \xcheck  & \xcheck & \xcheck & \xcheck \\
+\hline
+	 TwitterNLP & \ccheck & \xcheck  & \xcheck  & \ccheck  & \ccheck  & \ccheck  & \ccheck  & \xcheck  & \xcheck & \xcheck  & \ccheck & \ccheck & \ccheck \\
+\hline
+	 TweetNLP & \ccheck & \xcheck  & \xcheck  & \ccheck  & \ccheck  & \ccheck  & \ccheck  & \xcheck  & \xcheck & \xcheck  & \xcheck & \xcheck & \xcheck \\
+\hline
+	 MontyLingua & \ccheck & \xcheck  & \ccheck  & \ccheck  & \ccheck  & \ccheck  & \xcheck  & \xcheck  & \xcheck & \ccheck  & \xcheck & \xcheck & \xcheck \\
+\hline
+	 LinguaStream & \ccheck & \xcheck  & \ccheck  & \ccheck  & \ccheck  & \ccheck  & \ccheck  & \xcheck  & \xcheck & \xcheck  & \xcheck & \xcheck & \xcheck \\
+\hline
+	 TextBlob & \ccheck  & \ccheck & \ccheck & \ccheck  & \xcheck & \xcheck & \ccheck & \xcheck & \ccheck & \xcheck & \xcheck & \ccheck & \ccheck \\
+\hline
+	 PyNLPl & \ccheck  & \ccheck & \xcheck & \xcheck  & \xcheck & \xcheck & \xcheck & \xcheck & \xcheck & \xcheck & \xcheck & \xcheck & \ccheck \\
+\hline
+	 PolyGlot & \ccheck  & \xcheck & \ccheck & \ccheck  & \ccheck & \xcheck & \xcheck & \xcheck & \ccheck & \xcheck & \xcheck & \xcheck & \xcheck \\
+\hline
+	  ClearNLP & \ccheck  & \xcheck & \ccheck & \ccheck  & \ccheck & \xcheck & \ccheck & \ccheck & \xcheck & \xcheck & \xcheck & \xcheck & \xcheck \\
+\hline
+	  Mate-tools & \xcheck  & \xcheck & \ccheck & \ccheck  & \xcheck & \xcheck & \ccheck & \xcheck & \xcheck & \xcheck & \xcheck & \ccheck & \xcheck \\
+\hline
+	  MITIE & \ccheck  & \xcheck & \xcheck & \xcheck  & \ccheck & \xcheck & \xcheck & \xcheck & \xcheck & \ccheck & \xcheck & \xcheck & \xcheck \\
+\hline
+	  OpenNER & \ccheck  & \ccheck & \xcheck & \ccheck  & \ccheck & \xcheck & \ccheck & \ccheck & \ccheck & \xcheck & \xcheck & \xcheck & \xcheck \\
+\hline
+	  MorphAdorner & \ccheck  & \xcheck & \ccheck & \ccheck  & \ccheck & \xcheck & \xcheck & \xcheck & \xcheck & \xcheck & \xcheck & \xcheck & \xcheck \\
+\hline
+	  CCG tools & \ccheck  & \xcheck & \ccheck & \ccheck  & \ccheck & \ccheck & \ccheck & \ccheck & \xcheck & \xcheck & \xcheck & \xcheck & \xcheck \\
+\hline
+	  CIS tools & \ccheck  & \xcheck & \ccheck & \ccheck  & \xcheck & \xcheck & \ccheck & \ccheck & \xcheck & \xcheck & \xcheck & \xcheck & \xcheck \\
+\hline
+	  NLP Compromise & \ccheck  & \ccheck & \xcheck & \ccheck  & \xcheck & \xcheck & \xcheck & \xcheck & \xcheck & \xcheck & \xcheck & \xcheck & \xcheck \\
+\hline
+	  FACTORIE & \ccheck  & \xcheck & \xcheck & \ccheck  & \ccheck & \xcheck & \ccheck & \ccheck & \xcheck & \xcheck & \xcheck & \ccheck & \ccheck \\
+\hline
+	  Freeling & \ccheck  & \xcheck & \ccheck & \ccheck  & \ccheck & \xcheck & \ccheck & \ccheck & \xcheck & \xcheck & \xcheck & \xcheck & \xcheck \\
+\hline
+	  LingPipe & \ccheck  & \ccheck & \ccheck & \xcheck  & \xcheck & \ccheck & \xcheck & \xcheck & \ccheck & \xcheck & \xcheck & \ccheck & \ccheck \\
+\hline
+	  MALLET & \ccheck  & \ccheck & \xcheck & \xcheck  & \ccheck & \xcheck & \xcheck & \xcheck & \xcheck & \xcheck & \xcheck & \ccheck & \ccheck \\
+\hline
+\end{tabu}%
+}
+%}
+%\end{adjustbox}
+\caption[Available Features]{Available Features}
+\label{tab:summary_tech_art}
+\end{table}
+\end{landscape}
+
+As shown in Table \ref{tab:summary_tech_art}, basic tasks such as Tokenization, Morphological Analysis, POS, NER or Parsing are almost always supported since they are a very common part of NLP pipelines.  Other features, not so common, such as Coreference Resolution, Sentiment Analysis or Open IE are supported by fewer systems. These features are usually more specific and not always supported. Besides, some systems go further and provide machine learning capabilities, allowing new language models to be trained and evaluated. We can also see that toolkits like Stanford CoreNLP and frameworks like GATE and UIMA are very complete and flexible systems providing a wide range of features and allowing new applications to be built on top of them such as TwitIE. Other tools focus on single tasks and provide fewer features. \\
+Feature extraction is an important step in ML applications. The NLP domain provides a lot of freedom when choosing features that describe the problem, since the possible number of features is huge. In fact,  there are tookits specially designed for feature generation, such as WCCL \citep{Radziszewski2011WCCL} and Fextor \citep{Broda2013Fextor}. WCCL  is a very expressive language that allows the extraction of simple features, such as orthographic forms, lemmas, grammatical classes, among others and complex features, such as morphological agreements. On the other hand, Fextor starts by reading the document, iterating over its tokens, capturing their context (parts of documents) and applying a feature extraction to each element of interest (tokens, sentences, etc), reporting the end results.  \\
+
+

@@ -1,0 +1,66 @@
+% Chapter 1
+
+\chapter{Introduction} % Main chapter title
+%\epigraph{Relevance is timeless. Concerns about relevance will always be timely.}{Tefko Saracevic}
+
+\label{intro} % For referencing the chapter elsewhere, use \ref{Chapter1} 
+\lhead{Chapter 1. \emph{Introduction}} % This is for the header on each page - perhaps a shortened title
+
+This chapter introduces the main objectives and contributions of this work. In the first section, we present a quick motivation of the theme. In the second section, we detail the goals and context of the project and its importance. The third section lists the main contributions of this work. Finally, in the last section, we present the structure of the following chapters of this dissertation.
+
+%----------------------------------------------------------------------------------------
+
+\section{Motivation}
+\label{sec:motivation}
+The Web has a strong aspect. People use it to communicate and share ideas. Social networks are specially tailored for those activities and people resort to them to ask questions, share observations and engage in meaningful discussions. They are also a faster means of spreading and being aware of the recent news, mainly when compared to traditional media like newspapers or magazines. Thus, social networks can be considered a huge source of information and social data, but they still offer too much textual data for a single person to consume. Mining the social Web for valuable information is thus a goal that involves a large number of research challenges, including filtering useless information and providing intelligent recommendations.
+
+According to the Cambridge dictionary, \textit{relevance} is ``the degree to which something is related or useful to what is happening or being talked about''. As a human notion, \textit{relevance} is hard to measure and define. It is usually a goal of information retrieval methods in search engines, social media or news feeds and is often context-dependent. In fact, information may be relevant under some context but irrelevant on another. For more than fifty years, the concept of \textit{relevance} has been studied, although often implied with different terms, such as usefulness or searching, since searching is nothing more than the retrieval of relevant answers for a given query \citep{Saracevic2015Relevance}.
+
+Relevance is a very well studied concept in Information Retrieval. Nowadays, Information Retrieval is a mature and well established field which already has very efficient methods of searching relevant information. In this context, relevance of documents is usually related to search queries. However, from the journalistic point of view, where there are no hints or clues from the user such as query terms or search parameters, or even context, it is still hard to measure and define the relevance of a particular content and thus more research is needed in this direction. 
+
+People usually search for content that is relevant for a problem-at-hand. As time goes by and technology advances, the world is becoming more globalized, the number of Internet users that actively publish social content on the Web grows. Large social networks, such as Facebook or Twitter, see their active user base increasing every single day in large quantities. People search, share, connect and communicate with each other more easily. Moreover, new content is constantly produced and if we think about it, the quantity of irrelevant information grows faster than the relevant and actually useful information, causing a shrinking in valuable content. In other words, the ``signal-to-noise'' ratio is very low, meaning that most of the data is ``noise'', and thus irrelevant. For example, each time people want to search for some interesting content in social networks, they very often need to go through a series of random texts, political or sports rants or even propaganda and fake information that adds no value to the user, culminating with the fact that a person might miss important notifications because they were overwhelmed by uninteresting and irrelevant posts. This noise and pollution is ubiquitous in social networks and is also very damaging to the end user, because intuitively irrelevant posts creates unenthusiastic sentiments. \\
+One of the main reasons for the previous issue is that social networks are people-centric and not topic-centric, and as we follow more people, the likelihood of getting exposed to irrelevant content increases. %Another aspect is that what is relevant to a person might be irrelevant to another, and only a tiny fraction of the information is truly relevant to most people. 
+Therefore, it is important to create effective methods to find the best and most relevant content \citep{FacebookCrisis,IrrelevantBigData}.
+
+Michael Wu \citep{SearchingFiltering} makes an important distinction between searching and filtering. Due to the contextual and ambiguous nature of \textit{relevance}, we can not simply ``search'' for it, since a typical search implies that we already know exactly what we are looking for. If this was the case, we could simple use effective Information Retrieval (IR) methods to find the desired content. Search engines such as Bing or Google are already very good at this task. Since we do not know exactly what we are looking for, i.e., there is not clues such as search term queries, incoming or outgoing links, metadata, etc  we need to try another approach such as filtering, by eliminating the irrelevant information first and keeping the relevant content.
+
+
+
+
+%----------------------------------------------------------------------------------------
+\section{Goals and Context}
+The work presented here was conducted at the Cognitive \& Media Systems (CMS) Group of the CISUC research center at the University of Coimbra and is developed within the scope of the REMINDS\footnote{\href{https://www.fct.pt/apoios/projectos/consulta/vglobal\_projecto.phtml.en?idProjecto=137420\&idElemConcurso=8525}{UTAP-ICDT/EEI-CTP/0022/2014}} project, established under the UT-Austin Portugal Program.\\
+The REMINDS project is a joint work from the CRACS research unit of INESC TEC laboratory, the Faculty of Sciences from the University of Porto, the University of Texas, at Austin and the CISUC research center from the University of Coimbra, namely the professors Hugo Gonçalo Oliveira and Ana Oliveira Alves and the master student Alexandre Pinto. The REMINDS project is established under the UT-Austin Portugal Program (2014) and aims to develop a system capable of detecting relevant information published in social networks while ignoring irrelevant information such as private comments and personal information, or public text that is not important. This will allow the resulting system to predict new relevant information and help understanding how people decide on what is relevant and what is not. The REMINDS members are a multidisciplinary team with knowledge in text-mining, information retrieval, community detection, sentiment analysis and on ranking comments on the social web. The startup  \href{http://www.interrelate.pt}{INTERRELATE}, a company focusing on ``Mining, interrelating, sensing and analyzing digital data" is also a partner in this research.
+
+Essentially, the goal of the project REMINDS will be tackled with four main different approaches: Text Mining, Sentiment Analysis, Interaction Patterns \& Network Topologies, and Natural Language Processing (hereafter, NLP). These different techiques wil help tackle the problems discussed in the section \ref{sec:motivation}. 
+ 
+
+While the projected system will be a combination of different filters that will rely on features at different levels~(e.g. social network communities, content popularity, sentiment analysis, text mining), the present work exploits mainly Natural Language Processing (NLP) features.
+Our approach thus requires the automatic annotation of the text of social network posts by NLP tools, in order to extract linguistic features, then exploited to learn an automatic classifier that will hopefully detect \textit{relevant} posts.
+
+%----------------------------------------------------------------------------------------
+
+\section{Contributions}
+
+The development of this work lead to the following main contributions, further described in this document:
+\begin{itemize}
+	\item Analysis of the performance of Natural Processing Toolkits in different types of text, such as social text and formal text culminating with the publication of a paper describing the work \citep{pinto2016NLPPerformance}.
+	\item Creation of a \textit{relevance filter} that can detect relevant information published in social networks, using linguistic features and employing  different methods, with F$_1$ scores up to 0.85.
+   % \item Creation of an application prototype that is able to classify text according to its predicted relevance, using different relevance models.
+    \item Writing of a thesis report describing this work in detail.
+    
+\end{itemize}     
+%----------------------------------------------------------------------------------------
+
+
+\section{Structure of the Dissertation}
+
+The remaining of this document is structured as follows: In the next chapter we provide some background on the Natural Language Processing and Machine Learning (hereafter, ML) fields, relevant for contextualizing our research and understanding the following sections. Chapter \ref{art} is an overview of the state of the art in  social media text classification, popular datasets and available NLP tools. Chapter \ref{Chapter4} describes the performed experiments with NLP tools, showing the benchmarks applied. Chapter \ref{experimental_analysis} describes the experiments performed towards the automatic detection of relevant content with an  analysis of the classification results obtained. Finally, Chapter \ref{conclusions} presents the main conclusions of this work.
+
+\begin{comment}
+%\nocite{*}
+%Bib testing
+
+
+
+\end{comment}

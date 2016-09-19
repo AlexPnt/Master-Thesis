@@ -1,0 +1,467 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Thesis 
+% LaTeX Template
+% Version 1.3 (21/12/12)
+%
+% This template has been downloaded from:
+% http://www.latextemplates.com
+%
+% Original authors:
+% Steven Gunn s
+% http://users.ecs.soton.ac.uk/srg/softwaretools/document/templates/https://preview.overleaf.com/phttps://preview.overleaf.com/public/qmpmgrsjhbjk/images/988840e05aa9bab85df8b9f50121f4f02ad9e8c1.jpegublic/qmpmgrsjhbjk/images/988840e05aa9bab85df8b9f50121f4f02ad9e8c1.jpeg
+% and
+% Sunil Patel
+% http://www.sunilpatel.co.uk/thesis-template/
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+% Note:
+% Make sure to edit document variables in the Thesis.cls file
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[11pt, a4paper, oneside]{thesis} % Paper size, default font size and one-sided paper
+
+%extras
+\usepackage{afterpage}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{verbatim}
+\usepackage{epigraph}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{gantt}
+\usepackage{multirow}
+\usepackage{rotating,graphics}
+\usepackage{tabu}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{amssymb}% http://ctan.org/pkg/amssymb
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+\usepackage{slashbox}
+\usepackage{lscape}
+\usepackage{pdflscape}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{caption}
+\usepackage{pbox}
+\usepackage{adjustbox}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\urlstyle{same} 
+
+\usepackage{xcolor,colortbl}
+\definecolor{green}{rgb}{0,1,0}
+\definecolor{red}{rgb}{1,0,0}
+
+\newcommand{\ccheck}{\cellcolor{green}\cmark}  %{0.9}
+\newcommand{\xcheck}{\cellcolor{red}\xmark}
+
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+\newcommand\blankpage{%
+    \null
+    \thispagestyle{empty}%
+    \addtocounter{page}{-1}%
+    \newpage}
+
+\colorlet{punct}{red!60!black}
+\definecolor{background}{HTML}{EEEEEE}
+\definecolor{delim}{RGB}{20,105,176}
+\colorlet{numb}{magenta!60!black}
+
+\taburulecolor{black}
+
+
+
+\graphicspath{{./Pictures/}} % Specifies the directory where pictures are stored
+
+\usepackage[square, comma,sort&compress]{natbib} % Use the natbib reference package - read up on this to edit the reference style; if you want text (e.g. Smith et al., 2012) for the in-text references (instead of numbers), remove 'numbers' 
+\hypersetup{urlcolor=blue, colorlinks=false} % Colors hyperlinks in blue - %change to black if annoying
+\title{\ttitle} % Defines the thesis title - don't touch this
+
+%PREAMBLE
+\usepackage[intoc]{nomencl}
+\renewcommand{\nomname}{Nomenclature}
+\setlength{\nomitemsep}{-\parsep}
+\makenomenclature
+
+\nomenclature{\ensuremath{\textbf{P}}}{Precision}
+\nomenclature{\ensuremath{\textbf{R}}}{Recall}
+\nomenclature{\ensuremath{\textbf{F}_\textbf{1}}}{F-measure considering Harmonic Mean of Recall and Precision}
+\nomenclature{\ensuremath{\textbf{P$\mu$}}}{Micro Precision}
+\nomenclature{\ensuremath{\textbf{P$^{M}$}}}{Macro Precision}
+\nomenclature{\ensuremath{\textbf{R$\mu$}}}{Micro Recall}
+\nomenclature{\ensuremath{\textbf{R$^{M}$}}}{Macro Recall}
+
+\begin{document}
+
+\frontmatter % Use roman page numbering style (i, ii, iii, iv...) for the pre-content pages
+
+\setstretch{1.3} % Line spacing of 1.3
+
+% Define the page headers using the FancyHdr package and set up for one-sided printing
+\fancyhead{} % Clears all page headers and footers
+\rhead{\thepage} % Sets the right side header to show the page number
+\lhead{} % Clears the left side page header
+
+\pagestyle{fancy} % Finally, use the "fancy" page style to implement the FancyHdr headers
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % New command to make the lines in the title page
+
+
+
+% PDF meta-data
+\hypersetup{pdftitle={\ttitle}}
+\hypersetup{pdfsubject=\subjectname}
+\hypersetup{pdfauthor=\authornames}
+\hypersetup{pdfkeywords=\keywordnames}
+
+%----------------------------------------------------------------------------------------
+%	COVER PAGE
+%----------------------------------------------------------------------------------------
+\begin{titlepage}
+\begin{center}
+
+\textsc{\LARGE \univname}\\[1.5cm] % University name
+%\textsc{\Large Dissertation/Final Report}\\[0.5cm] % Thesis type
+\textsc{\Large Dissertation}\\[0.5cm] % Thesis type
+\textsc{}\\[0.5cm] % Thesis type
+
+\HRule \\[0.4cm] % Horizontal line
+{\huge \bfseries \ttitle}\\[0.4cm] % Thesis title
+\HRule \\[1.5cm] % Horizontal line
+ 
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft} \large
+\emph{Author:}\\
+\authornames % Author name - remove the \href bracket to remove the link
+\end{flushleft}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{flushright} \large
+\emph{Advisors:} \\
+\supname % Supervisor name - remove the \href bracket to remove the link  
+\end{flushright}
+\end{minipage}\\[3cm]
+ 
+\large \textit{Thesis submitted in partial fulfillment of the requirements\\ for the degree of \degreename}\\[0.3cm] % University requirement text
+
+\facname\\\deptname\\[2cm] % Faculty name and department name
+ 
+{\large September, 2016}\\[2cm] % Date
+\includegraphics[height=24mm]{Figures/MARCA_UC_LET_PRETO} 
+\vfill
+\end{center}
+
+\end{titlepage}
+\afterpage{\blankpage}
+\clearpage % Start a new page
+%----------------------------------------------------------------------------------------
+%	BACK PAGE
+%----------------------------------------------------------------------------------------
+\begin{titlepage}
+\begin{center}
+
+\textsc{\LARGE \univname}\\[1.5cm] % University name
+%\textsc{\Large Dissertation/Final Report}\\[0.5cm] % Thesis type
+\textsc{\Large Dissertation}\\[0.5cm] % Thesis type
+\textsc{}\\[0.5cm] % Thesis type
+
+\HRule \\[0.4cm] % Horizontal line
+{\huge \bfseries \ttitle}\\[0.4cm] % Thesis title
+\HRule \\[1.5cm] % Horizontal line
+ 
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft} \large
+\emph{Author:}\\
+\authornames % Author name - remove the \href bracket to remove the link
+\end{flushleft}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{flushright} \large
+\emph{Advisors:} \\
+\supname % Supervisor name - remove the \href bracket to remove the link  
+\end{flushright}
+\end{minipage}\\[0.5cm]
+
+\begin{minipage}{0.90\textwidth}
+\begin{flushright} \large
+\emph{Jury:} \\
+Prof. Dr. Bernardete Ribeiro \\ Prof. Dr. Bruno Cabral 
+\end{flushright}
+\end{minipage}\\[1cm]
+ 
+\large \textit{Thesis submitted in partial fulfillment of the requirements\\ for the degree of \degreename}\\[0.3cm] % University requirement text
+
+\facname\\\deptname\\[2cm] % Faculty name and department name
+ 
+{\large September, 2016}\\[2cm] % Date
+\includegraphics[height=24mm]{Figures/MARCA_UC_LET_PRETO} 
+\vfill
+\end{center}
+
+\end{titlepage}
+\afterpage{\blankpage}
+\clearpage % Start a new page
+
+%----------------------------------------------------------------------------------------
+%	QUOTATION PAGE
+%----------------------------------------------------------------------------------------
+
+
+\pagestyle{empty} % No headers or footers for the following pages
+
+
+%\null\vfill % Add some space to move the quote down the page a bit
+%\vspace{40cm}
+%\topskip0pt
+\vspace*{\fill}
+\begin{center}
+\textit{To Rui, Ana and Adolfo.}
+\end{center}
+\vspace*{\fill}
+
+
+\afterpage{\blankpage}
+\clearpage % Start a new page
+
+
+%\vfill\vfill\vfill\vfill\vfill\vfill\null % Add some space at the bottom to position the quote just right
+
+%\clearpage % Start a new page
+
+\acknowledgements{\addtocontents{toc}{\vspace{1em}} % Add a gap in the Contents, for aesthetics
+
+I would like to thank my advisers, Prof. Hugo Gonçalo Oliveira and Prof. Ana Oliveira Alves for all their guidance, support and helpful advice. I would also like to thank the rest of the research team that was part of this project for their contributions.\\
+I am grateful to my family, friends and anybody who somehow contributed and helped me get where I am now.
+}
+\afterpage{\blankpage}
+\clearpage % Start a new page
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT PAGE
+%----------------------------------------------------------------------------------------
+
+\addtotoc{Abstract} % Add the "Abstract" page entry to the Contents
+
+\thispagestyle{empty}
+ %% \null\vfil
+  \begin{center}
+    \setlength{\parskip}{0pt}
+    {\huge{\textit{Abstract}} \par}
+    \bigskip
+  \end{center}
+
+Given the overwhelming quantity of messages posted in social networks, in order to to make their utilization more productive, it is imperative to filter out irrelevant information. 
+This work is focused on the automatic classification of public social data according to its potential \textit{relevance} to a general audience, according to journalistic criteria. This means filtering out information that is private, personal, not important or simply irrelevant to the public, improving the the overall quality of the social media information.\\
+A range of natural language processing toolkits was first assessed while performing a set of standard tasks in popular datasets that cover newspaper and social network text. After that, different learning models were tested, using linguistic features extracted by some of the previous toolkits. The prediction of journalistic criteria,  key in the assessment of relevance, was also explored, using the same features. A new classifier uses the journalist predictions, made by an ensemble of linguistic classifiers, as features to detect relevance. The obtained model achieved a F$_1$ score of 0.82 with an area under the curve(AUC) equal to 0.78. 
+
+% The Web is a social creation. People use it to communicate and share ideas. Social networks are specially tailored for this kind of activities since people use them to ask questions, share observations and engage in meaningful discussions and are usually a faster way to receive news than traditional media like newspapers, magazines, etc. Thus, social networks are a great source of information and social data. Mining the social web offers a large number of possibilities including providing intelligent recommendations. This dissertation involves the development of a system that classifies public social data according to its potential \textit{relevance} to a general audience. This means filtering out information that is private, personal, not important or simply irrelevant to the public. Our methodology will be based on a standard machine learning approach where the set of features of our model will be extracted through common Natural Language Processing tasks. The end result will be a model of \textit{relevance} which makes automatic \textit{relevance} predictions.
+
+%This dissertation involves the development of a system that classifies public social data according to its potential \textit{relevance} to a general audience. This means filtering out information that is private, personal, not important or simply irrelevant to the public. Our methodology will be based on a standard supervised machine learning approach where the set of features of our model will be extracted through common Natural Language Processing tasks. The end result will be a model of \textit{relevance} which makes automatic \textit{relevance} predictions. Current work includes a review of the literature, from both scientific and technological perspectives, experimentation with standard NLP tools, in order to assess their performance on different kinds of texts, namely social and formal text, and an initial classification experiment with a machine learning toolkit.
+
+\textbf{Keywords: } \keywordnames Relevance Assessment, Social Mining, Information Extraction, Natural Language Processing, Automatic Text Classification 
+
+\afterpage{\blankpage}
+\clearpage % Start a new page
+
+\thispagestyle{empty}
+ %% \null\vfil
+  \begin{center}
+    \setlength{\parskip}{0pt}
+    {\huge{\textit{Resumo}} \par}
+    \bigskip
+  \end{center}
+
+%\abstract{\addtocontents{toc}{\vspace{1em}} % Add a gap in the Contents, for aesthetics
+
+Dada a grande quantidade de dados publicada em redes sociais, é imperativo filtrar informação irrelevante. Este trabalho foca-se na detecção automática de dados sociais públicos de acordo com a sua relevância para a audiência em geral. Isto significa filtrar informação que é privada, pessoal, não importante, ou simplesmente irrelevante para o público, melhorando assim a qualidade da informação. \\
+Um conjunto de ferramentas de linguagem em processamento natural é testado em uma série de tarefas padrão com um conjunto de dados que cobrem conteúdo jornalístico e texto social. Para além disso, diferentes modelos de aprendizagem são testados, usando características linguísticas extraídas através de tarefas de processamento de linguagem natural, bem como critérios jornalísticos. O sistema final usa as previsões jornalísticas, realizadas por um conjunto de classificadores linguísticos, como atributos para detectar relevância. O modelo obtido alcançou um valor de F$_1$ de 0.82 com uma área debaixo da curva(AUC) igual a 0.78.  
+
+\textbf{Palavras chave: } \keywordnames Detecção de Relevância, Extracção de Dados Sociais, Extracção de Conhecimento, Processamento de Linguagem Natural, Classificação Automática de Texto 
+
+
+\afterpage{\blankpage}
+\clearpage % Start a new page
+%----------------------------------------------------------------------------------------
+%	ACKNOWLEDGEMENTS
+%----------------------------------------------------------------------------------------
+
+
+\setstretch{1.3} % Reset the line-spacing to 1.3 for body text (if it has changed)
+
+
+
+%----------------------------------------------------------------------------------------
+%	LIST OF CONTENTS/FIGURES/TABLES PAGES
+%----------------------------------------------------------------------------------------
+
+\pagestyle{fancy} % The page style headers have been "empty" all this time, now use the "fancy" headers as defined before to bring them back
+
+\lhead{\emph{Contents}} % Set the left side page header to "Contents"
+\tableofcontents % Write out the Table of Contents
+
+\lhead{\emph{List of Figures}} % Set the left side page header to "List of Figures"
+\listoffigures % Write out the List of Figures
+
+\lhead{\emph{List of Tables}} % Set the left side page header to "List of Tables"
+\listoftables % Write out the List of Tables
+
+
+%\lhead{\emph{List of Algorithms}}
+%\listofalgorithms
+
+
+
+%----------------------------------------------------------------------------------------
+%	ABBREVIATIONS
+%----------------------------------------------------------------------------------------
+
+
+\clearpage % Start a new page
+
+\setstretch{1.5} % Set the line spacing to 1.5, this makes the following tables easier to read
+
+\lhead{\emph{Acronyms}} % Set the left side page header to "Abbreviations"
+\renewcommand*\listsymbolname{Acronyms}
+
+% \listofsymbols{ll} % Include a list of Abbreviations (a table of two columns)
+% {
+
+
+% \textbf{CoNLL} & \textbf{C}onference on \textbf{N}atural \textbf{L}anguage \textbf{L}earning \\
+% \textbf{TREC} & \textbf{T}ext \textbf{RE}trieval \textbf{C}onference \\
+% \textbf{LDC} & \textbf{L}inguistic \textbf{D}ata \textbf{C}onsortium \\
+% \textbf{CCG} & \textbf{C}ognitive \textbf{C}omputation \textbf{G}roup \\
+% \textbf{CIS} & \textbf{C}enter for \textbf{I}nformation and Language Processing \\
+% \textbf{ELRA} & \textbf{E}uropean \textbf{L}anguage \textbf{R}esources \textbf{A}ssociation \\
+% \textbf{ICAME} & \textbf{I}nternational \textbf{C}omputer \textbf{A}rchive of \textbf{M}odern and \textbf{M}edieval \textbf{E}nglish \\
+% \textbf{ICE} & \textbf{I}nternational \textbf{C}orpus of \textbf{E}nglish \\
+% \textbf{NIST} & \textbf{N}ational \textbf{I}nstitute of \textbf{S}tandards and \textbf{T}echnology \\
+% \textbf{ECI/MCI} & \textbf{E}uropean \textbf{C}orpus \textbf{I}nitiative \textbf{M}ultilingual \textbf{C}orpus \textbf{I} \\
+% \textbf{MICASE} & \textbf{M}ichigan \textbf{C}orpus of \textbf{A}cademic \textbf{S}poken \textbf{E}nglish \\
+% \textbf{PPCME} & \textbf{P}enn-Helsinki \textbf{P}arsed \textbf{C}orpus of \textbf{M}iddle \textbf{E}nglish \\
+% \textbf{RTC} & \textbf{R}overeto \textbf{T}witter \textbf{C}orpus \\
+% \textbf{MPQA} & \textbf{M}ulti \textbf{P}erspective \textbf{Q}uestion \textbf{A}nswering \\
+% \textbf{IR} & \textbf{I}nformation \textbf{R}etrieval \\
+% \textbf{POS} & \textbf{P}art \textbf{O}f \textbf{S}peech \\
+% \textbf{NER} & \textbf{N}ame \textbf{E}ntity \textbf{R}ecognition \\
+% \textbf{LDA} & \textbf{L}atent \textbf{D}irichlet \textbf{A}llocation \\
+% \textbf{REMINDS} & \textbf{RE}levance  \textbf{MIN}ing   and \textbf{D}etection  \textbf{S}ystem \\
+% \textbf{CMS} & \textbf{C}ognitive  and \textbf{M}edia \textbf{S}ystems \\
+% \textbf{CRACS} & \textbf{C}enter for \textbf{R}esearch   in \textbf{A}dvanced  \textbf{C}omputing \textbf{S}ystems \\
+% \textbf{CISUC} & \textbf{C}entre for \textbf{I}nformatics and \textbf{S}ystems of the \textbf{U}niversity of \textbf{C}oimbra \\
+% \textbf{INESC TEC} & \textbf{IN}stitute for \textbf{S}ystems and \textbf{C}omputer \textbf{E}ngineering, \textbf{TEC}hnology and Science \\
+% \textbf{GATE} & \textbf{G}eneral \textbf{A}rchitecture for \textbf{T}ext \textbf{E}ngineering \\
+% \textbf{ANNIE} & \textbf{A} \textbf{N}early-\textbf{N}ew \textbf{I}nformation \textbf{E}xtraction System \\
+% \textbf{UIMA} & \textbf{U}nstructured \textbf{I}nformation \textbf{M}anagement \textbf{A}rchitecture \\
+% \textbf{NLTK} & \textbf{N}atural \textbf{L}anguage \textbf{T}ool\textbf{K}it\\
+% \textbf{NLP} & \textbf{N}atural \textbf{L}anguage \textbf{P}rocessing \\
+% \textbf{LDA} & \textbf{L}atent \textbf{D}irichlet \textbf{A}llocation \\
+% \textbf{ML} & \textbf{M}achine \textbf{L}earning \\
+% \textbf{AI} & \textbf{A}rtificial \textbf{I}ntelligence \\
+% \textbf{PCA} & \textbf{P}rincipal \textbf{C}omponent \textbf{A}nalysis \\
+% \textbf{KNN} & \textbf{A}rtificial \textbf{I}ntelligence \\
+% \textbf{SVM} &  \textbf{S}upport \textbf{V}ector \textbf{M}achine\\
+% \textbf{AUC} & \textbf{A}rea \textbf{U}nder the \textbf{C}urve \\
+% \textbf{AP} & \textbf{A}verage \textbf{P}recision \\
+% }
+
+%----------------------------------------------------------------------------------------
+%	PHYSICAL CONSTANTS/OTHER DEFINITIONS
+%----------------------------------------------------------------------------------------
+\begin{comment}
+\clearpage % Start a new page
+
+\lhead{\emph{Physical Constants}} % Set the left side page header to "Physical Constants"
+
+\listofconstants{lrcl} % Include a list of Physical Constants (a four column table)
+{
+Speed of Light & $c$ & $=$ & $2.997\ 924\ 58\times10^{8}\ \mbox{ms}^{-\mbox{s}}$ (exact)\\
+% Constant Name & Symbol & = & Constant Value (with units) \\
+}
+}
+\end{comment}
+
+\clearpage % Start a new page
+
+\lhead{\emph{List of Symbols}} % Set the left side page header to "Symbols"
+
+\setstretch{1.5} % Set the line spacing to 1.5, this makes the following tables easier to read
+
+%\printnomenclature
+
+
+%----------------------------------------------------------------------------------------
+%	DEDICATION
+%----------------------------------------------------------------------------------------
+%
+%\setstretch{1.3} % Return the line spacing back to 1.3
+%
+%\pagestyle{empty} % Page style needs to be empty for this page
+%
+%\dedicatory{To Who? \ldots} % Dedication text
+%
+%\addtocontents{toc}{\vspace{2em}} % Add a gap in the Contents, for aesthetics
+
+%----------------------------------------------------------------------------------------
+%	THESIS CONTENT - CHAPTERS
+%----------------------------------------------------------------------------------------
+
+\mainmatter % Begin numeric (1,2,3...) page numbering
+
+\pagestyle{fancy} % Return the page headers back to the "fancy" style
+
+% Include the chapters of the thesis as separate files from the Chapters folder
+% Uncomment the lines as you write the chapters
+
+\input{./Chapters/Chapter1}
+\input{./Chapters/Chapter2} 
+\input{./Chapters/Chapter3}
+\input{./Chapters/Chapter4} 
+\input{./Chapters/Chapter5} 
+\input{./Chapters/Chapter6} 
+ 
+
+%----------------------------------------------------------------------------------------
+%	THESIS CONTENT - APPENDICES
+%----------------------------------------------------------------------------------------
+
+\addtocontents{toc}{\vspace{2em}} % Add a gap in the Contents, for aesthetics
+
+\appendix % Cue to tell LaTeX that the following 'chapters' are Appendices
+
+% Include the appendices of the thesis as separate files from the Appendices folder
+% Uncomment the lines as you write the Appendices
+
+%\input{./Appendices/AppendixA}
+
+\addtocontents{toc}{\vspace{2em}} % Add a gap in the Contents, for aesthetics
+
+\backmatter
+
+%----------------------------------------------------------------------------------------
+%	BIBLIOGRAPHY
+%----------------------------------------------------------------------------------------
+
+\label{Bibliography}
+
+\lhead{\emph{Bibliography}} % Change the page header to say "Bibliography"
+
+%\bibliographystyle{amsplain} % Use the "unsrtnat" BibTeX style for formatting the Bibliography
+
+\bibliographystyle{unsrtnat} % Use the "unsrtnat" BibTeX style for formatting the Bibliography
+
+\bibliography{Bibliography} % The references (bibliography) information are stored in the file named "Bibliography.bib"
+
+
+
+\end{document}

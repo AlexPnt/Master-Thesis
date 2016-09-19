@@ -1,0 +1,16 @@
+% Chapter 6
+
+\chapter{Conclusions} % Main chapter title
+%\epigraph{A fancy quote.}{Me}
+
+\label{conclusions} % For referencing the chapter elsewhere, use \ref{Chapter2} 
+\lhead{Chapter 6. \emph{Conclusions}} % This is for the header on each page - perhaps a shortened title
+
+In this work, we described the REMINDS system which will have at its core a classifier able to predict relevant information and filter out irrelevant information. More precisely, this specific work dealt with the development of a classifier for predicting the relevance of social media posts relying exclusively in linguistic features extracted from text as the main distinction from other approaches, by other partners of the REMINDS project. \\
+This document started with a brief overview of the academic disciplines where this work is focused, NLP, ML \& Text Classification, describing important concepts useful to understand this work. We then made a survey of a wide range of existing techniques to solve text classification problems and also presented a technological review of existing software implementations that currently support NLP tasks and, in some cases, ML techniques. Furthermore, we described the REMINDS system global architecture, with focus on the parts that were the focus of this work.
+
+We have shown that, using only the available pre-trained models, there is not one NLP toolkit that overperformed all the others in every scenario and pre-processing task. Nevertheless, it was an important step to decide which tools to use in the feature extraction process.
+
+We have tackled the problem of identifying social network messages as relevant or not, from a journalistic point of view, and relying only on linguistic features. Based on a dataset of social network messages annotated by volunteer contributors, the best relevance classification model learned achieved a $F_1$-score of 0.82. This model relied on a set of intermediate classifiers using the Random Forest model, using linguistic features extracted from the textual data, with the end model based on a k-Nearest Neighbors classifier. The presented results are higher than those obtained using single feature sets with no preprocessing or feature selection/reduction applied, which highlights the importance of these additional steps.
+
+Regarding future work, several alternatives could be explored and potentially improve the results. Starting with the feature extracting process, there are other NLP tasks that could be explored, such as: Information extraction which extracts structured knowledge like facts, events or relationships; relation extraction which identifies relationships between entities; dependency parsing which is useful to understand textual relations, such as who did what, when, where and how which could also have been used as features. On the other hand, different combinations of feature selection/reduction methods and learning models as well, could be explored. Moreover, the resulting system can be integrated with the alternative approaches, based on different features, in a larger relevance mining platform, namely the REMINDS system.

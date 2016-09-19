@@ -1,0 +1,382 @@
+% Chapter 4
+
+\chapter{Performance of Different NLP Toolkits in Formal and Social Media Text} % Main chapter title
+%\epigraph{If you can't explain it simply, you don't understand it well enough.}{Albert Einstein}
+
+\label{Chapter4} % For referencing the chapter elsewhere, use \ref{Chapter1} 
+
+\lhead{Chapter 4. \emph{Performance of Different NLP Toolkits in Formal and Social Media Text}} % This is for the header on each page - perhaps a shortened title
+In this chapter, we assess a range of natural language processing toolkits with their default configuration, while performing a set of standard tasks~(e.g.~tokenization, POS tagging, chunking and NER), in popular datasets that cover newspaper and social network text.
+The obtained results are analyzed and, while we could not decide on a single toolkit, this exercise was very helpful to narrow our choice.
+
+%----------------------------------------------------------------------------------------
+\section*{Performance of Different NLP Toolkits in Formal and Social Media Text}
+There are many toolkits available for performing common natural language processing tasks, which enable the development of more powerful applications without having to start from scratch.
+%For widely-spoken languages, such as English, there is currently a wide range of NLP toolkits available for performing lower-level 
+They enable to perform NLP tasks, such as tokenization, PoS tagging, chunking or NER.
+Choosing which tool to use, out of the range of available tools, may depend on several aspects, including the kind and source of text, where the level, formal or informal, may influence the performance of such tools. Moreover, users have also to select the most suitable set of tools that meets their specific purpose, such as the community of users, frequency of new versions and updates, support, portability, cost of integration, programming language, the number of covered tasks, and, of course, their performance.
+
+Before moving on to the relevance detection, we assess a range of natural language processing toolkits with their default configuration, while performing a set of standard tasks~(~tokenization, POS tagging, chunking and NER), in popular datasets that cover newspaper and social network text. Conclusions taken from this comparison will be considered in the next stage of this work.
+
+Although the majority of the tested tools could be trained with specific corpora and / or for a specific purpose, we focused on comparing the performance of their default configuration, which means that we used the available pre-trained models for each tool and target task.
+This situation is especially common for users that either do not have experience, time or available data for training the tools for a specific purpose.
+This comparison is helpful to narrow our choice, supports our final decision and is also helpful for other developers and researchers in need of making a similar selection.
+
+\section{Datasets}
+
+In order to evaluate the performance of the different NLP toolkits and determine the best performing ones, the same criteria must be followed, including the same metrics and manually-annotated gold standard data.
+Testing tools in the same tasks and scenarios makes comparison fair and more reliable.
+For this purpose, we relied on well-known datasets widely used in NLP and text classification research, not only in the evaluation of NLP tools, but also for training new models.
+More precisely, we used different gold standard datasets that cover different kinds of text -- newspaper and social media.
+Regarding newspaper text, we used a collection of news wire articles from the Reuters Corpus\footnote{\url{http://trec.nist.gov/data/reuters/reuters.html}}, previously used in the shared task of the 2003 edition of the CoNLL conference. The POS and chunking annotations of this dataset were obtained using a memory-based MBT tagger \citep{daelemansMBT1996}. The named entities were manually annotated at the University of Antwerp \citep{TjongCoNLL2003}.
+
+In order to represent social and more informal text, we first used the annotated data from Alan Ritter's Twitter corpus\footnote{\url{https://github.com/aritter/twitter_nlp/tree/master/data/annotated}}, with manually tokenized, POS-tagged and chunked Twitter posts, also with annotated named entities.
+The collection of Twitter posts used in the MSM 2013 workshop\footnote{\url{http://oak.dcs.shef.ac.uk/msm2013/challenge.html}}, where named entities are annotated, was also used as a gold standard for social media text.
+
+The POS tags of the CoNLL-2003 dataset follow the Penn Treebank style\footnote{\url{https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html}}.
+Alan Ritter's corpus follows the same format, with the same POS-tags and additional specific tags for retweets, @usernames, \#hashtags, and urls.
+For the chunk tags, the format I$\vert$O$\vert$B-TYPE is used in both datasets. This is interpreted as: the token is inside~(I), in the beginning~(B) of a following chunk of the same type or outside~(O) of a chunk phrase \citep{ramshaw1995textchunking}.
+The named entities in the CoNLL-2003 dataset are annotated using four entity types, namely Location (LOC), Organization (ORG), Person (PER) and Miscellaneous (MISC). In Alan Ritter's corpus, entity types are not exactly the same, so they had to be converted, as we mention further on this section.
+%HUGO: confirmar se isto foi mesmo assim
+The \#MSM2013 corpus only contains annotated named entities and their types. To ease experimentation, this corpus was converted to the same format as the other two.
+
+Table \ref{tab:annotated-data-format} illustrates the annotation format for the experiments. Table \ref{tab:data-char} shows some numerical characteristics of the used datasets.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{llll}
+\textbf{Token} & \textbf{POS} & \textbf{Syntactic Chunk} & \textbf{Named Entity} \\
+Only & RB & B-NP & O \\
+France & NNP & I-NP & LOC \\
+and & CC & I-NP &  O \\
+Britain & NNP & I-NP & LOC \\
+backed & VBD & B-VP & O \\
+Fischler & NNP & B-NP & PER \\
+'s & POS & B-NP & O \\
+proposal & NN & I-NP & O \\
+. & . & O & O \\
+\end{tabular}
+\caption[Example of the Annotated Data Format]{Example of the Annotated Data Format}
+\label{tab:annotated-data-format}
+\end{table}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Dataset} & \textbf{Documents} & \textbf{Tokens} & \textbf{Average Tokens per Document}\\ \hline
+CoNLL (Reuter Corpus) & 946 & 203621 & 215 \\ \hline
+Twitter (Alan Ritter) & 2394 &  46469 & 19 \\ \hline
+\#MSM2013 & 2815 & 52124 & 19 \\ \hline
+\end{tabular}
+\caption[Dataset properties]{Dataset properties}
+\label{tab:data-char}
+\end{table}
+
+It is clear that the Twitter datasets (Alan Ritter and \#MSM2013) have a greater number of documents with short sentences. On the other hand, the CoNLL dataset has longer and more complex sentences. Tables \ref{tab:data-pos} and \ref{tab:data-chunk} show the distribution of the POS and chunk tags, respectively for Alan Ritter's and CoNLL-2003 corpora. %\#MSM2013 dataset was only used for the NER experiments. 
+For the POS tags, only those that account for more than one percent at least in one of the two datasets, excluding punctuation marks, are shown.
+Noun phrases~(NP), prepositional phrases~(PP) and verbal phrases~(VP) are the most common chunks in both datasets.
+\begin{table}[H]
+\centering
+\footnotesize
+\begin{tabular}{|l|l|l|l|}
+\hline
+\multirow{2}{*}{} & \multicolumn{3}{c|}{Dataset} \\ \cline{2-4} 
+ & Twitter (Alan Ritter) & CoNLL (Reuter Corpus) & Description\\ \hline
+CC & 305 (2.01 \%) & 3653 (1.79 \%) & Coordinating conjunction \\ \hline
+CD & 268 (1.76 \%) & 19704 (9.68 \%) & Cardinal number \\ \hline
+DT & 825 (5.43 \%) & 13453 (6.61 \%) & Determiner\\ \hline
+IN & 1091 (7.18 \%) & 19064 (9.36 \%) & Preposition or subordinating conjunction\\ \hline
+JJ & 670 (4.41 \%) & 11831 (5.81 \%) & Adjective\\ \hline
+MD & 181 (1.19 \%) & 1199 (0.59 \%) & Modal\\ \hline
+NN & 1931 (12.72 \%) & 23899 (11.74 \%) & Noun, singular or mass \\ \hline
+NNP & 1159 (7.63 \%) & 34392 (16.89 \%) & Proper noun, singular  \\ \hline
+NNS & 393 (2.59 \%) & 9903 (4.86 \%) & Noun, plural  \\ \hline
+PRP & 1106 (7.28 \%) & 3163 (1.55 \%) & Personal pronoun \\ \hline
+PRP\$ & 234  (1.54 \%) & 1520 (0.75 \%) & Possessive pronoun \\ \hline
+RB & 680 (4.48 \%) & 3975 (1.95 \%) & Adverb\\ \hline
+RT & 152 (1.00 \%) & 0 & Retweet \\ \hline
+TO & 264 (1.74 \%) & 3469 (1.70 \%) & to\\ \hline
+UH & 493 (3.25 \%) & 30 (0.01 \%) & Interjection\\ \hline
+URL & 183 (1.21 \%) & 0 & Url\\ \hline
+USR & 464 (3.06 \%) & 0 & User\\ \hline
+VB & 660 (4.35 \%) & 4252 (2.09 \%) & Verb, base form \\ \hline
+VBD & 306 (2.02 \%) & 8293 (4.07 \%) & Verb, past tense \\ \hline
+VBG & 303 (2.00 \%) & 2585 (1.27 \%) & Verb, gerund or present participle \\ \hline
+VBN & 140 (0.92 \%) & 4105 (2.02 \%) & Verb, past participle \\ \hline
+VBP & 527 (3.47 \%) & 1436 (0.71 \%) & Verb, non-3rd person singular present \\ \hline
+VBZ & 342 (2.25 \%) & 2426 (1.19 \%) & Verb, 3rd person singular present \\ \hline
+Others & 908 ( 5.98\%) & 10478 ( 5.15 \%) & \\ \hline
+\end{tabular}
+\caption[Datasets with PoS Tags]{Datasets  with PoS Tags}
+\label{tab:data-pos}
+\end{table}
+
+\begin{table}[H]
+\centering
+\footnotesize
+\begin{tabular}{|l|l|l|l|}
+\hline
+\multirow{2}{*}{} & \multicolumn{3}{c|}{Dataset} \\ \cline{2-4} 
+ & Twitter (Alan Ritter) & CoNLL (Reuter Corpus) & Description \\ \hline
+B-ADJP & 241 (1.58 \%) & 2 (0.00 \%) & Begins an adjective phrase  \\ \hline
+B-ADVP & 535 (3.52 \%) & 22 (0.01 \%) & Begins an adverb phrase\\ \hline
+B-CONJP & 2 (0.01 \%) & 0 &  Begins a conjunctive phrase\\ \hline
+B-INTJ & 384 (2.52 \%) & 0 & Begins an interjection\\ \hline
+B-NP & 3992 (26.24 \%) & 3777 (1.85 \%) & Begins a noun phrase \\ \hline
+B-PP & 1027 (6.75 \%) & 254 (0.12 \%) & Begins a prepositional phrase \\ \hline
+B-PRT & 109 (0.72 \%) & 0 & Begins a particle\\ \hline
+B-SBAR & 103 (0.68 \%) & 8 (0.00 \%) & Begins a subordinating clause \\ \hline
+B-VP & 1884 (12.39 \%) & 163 (0.08 \%) & Begins a verb phrase \\ \hline
+I-ADJP & 86 (0.57 \%) & 1374 (0.67 \%) & Is inside an adjective phrase  \\ \hline
+I-ADVP & 66 (0.43 \%) & 2573 (1.35 \%) & Is inside an adverb phrase\\ \hline
+I-CONJP & 2 (0.01 \%) & 70 (0.03 \%) & Is inside a conjunctive phrase\\ \hline
+I-INTJ & 124 (0.82 \%) & 60 (0.03 \%) & Is inside an interjection\\ \hline
+I-LST & 0  & 36 (0.02 \%) & Is inside a list marker\\ \hline
+I-NP & 2686 (17.66 \%) & 120255 (59.06 \%) & Is inside a noun phrase \\ \hline
+I-PP & 10 (0.07 \%) & 18692 (9.18 \%) & Is inside a prepositional phrase \\ \hline
+I-PRT & 0  & 527 (0.26 \%) & Is inside a particle\\ \hline
+I-SBAR & 5 (0.03 \%) & 1280 (0.63 \%) & Is inside a subordinating clause \\ \hline
+I-VP & 842 (5.54 \%) & 26702 (13.11 \%) & Is inside verb phrase \\ \hline
+O & 27646 (20.47 \%) & 3113 (13.58 \%) & Is outside of any chunk.\\ \hline
+\end{tabular}
+\caption[Datasets with Chunk Tags]{Datasets with Chunk Tags}
+\label{tab:data-chunk}
+\end{table}
+
+For the NER evaluation, we stripped the IOB tags from the datasets whenever they were present, and merged them in a single entity tag, i.e., different tags such as B-LOC and I-LOC became simply LOC.
+Besides making comparison easier, this was made due to some noticed inconsistencies on the usage of I's and B's.
+Table \ref{tab:data-ner} shows the distribution of the named entities in all of the used datasets.
+\begin{table}[H]
+\centering
+\footnotesize
+\begin{tabular}{|l|l|l|l|}
+\hline
+\multirow{2}{*}{} & \multicolumn{3}{c|}{Dataset} \\ \cline{2-4} 
+ & Twitter (Alan Ritter) & CoNLL (Reuter Corpus) & \#MSM2013 \\ \hline
+COMPANY & 207 (0.45 \%) & 0 &  0 \\ \hline
+FACILITY & 209 (0.45 \%) & 0 & 0 \\ \hline
+GEO-LOC & 325 (0.70 \%)& 0 & 0 \\ \hline
+LOC & 0 & 8297 (4.07\%) & 795 (1.53 \%) \\ \hline
+MISC & 0 & 4593 (2.26\%) & 511 (0.98 \%)\\ \hline
+MOVIE & 80 (0.17 \%) & 0 & 0 \\ \hline
+MUSICARTIST & 116 (0.25 \%) & 0 & 0 \\ \hline
+ORG & 0 & 10025 (4.92 \%) & 842 (1.62 \%)\\ \hline
+OTHER& 545 (1.39 \%) & 0 & 0 \\ \hline
+PERSON & 664 (1.43 \%)& 11128 ( 5.47 \%) & 2961 (5.68 \%)\\ \hline
+PRODUCT & 177 (0.38 \%) & 0 & 0 \\ \hline
+SPORTSTEAM & 74 (0.16 \%) & 0 & 0 \\ \hline
+TVSHOW & 65 (0.14 \%) & 0 & 0 \\ \hline
+O & 44007 (94.70 \%)& 169578 (83.28 \%) & 47015 (90.20 \%)\\ \hline
+\end{tabular}
+\caption[Datasets with NER Tags]{Datasets with NER Tags}
+\label{tab:data-ner}
+\end{table}
+
+We recall that the entity types in Alan Ritter's corpus are more and different than the other two.
+So, in order to enable comparison in the same lines, additional entity types were considered as alternative tags for one of the types covered by the CoNLL-2003 dataset: LOC, MISC, ORG and PER.
+Table \ref{tab:data-joint-ner} shows the new entities distribution after performing the following mapping: 
+\begin{itemize} 
+\item FACILITY and  GEO-LOC became LOC
+\item MOVIE, TVSHOW and OTHER became MISC
+\item COMPANY, PRODUCT and SPORTSTEAM became ORG
+\item PERSON, MUSICARTIST became PER. 
+\end{itemize}
+
+
+This mapping considered the annotation guidelines of the CoNLL-2003 shared task\footnote{\url{http://www.cnts.ua.ac.be/conll2003/ner/annotation.txt}}.
+
+\begin{table}[H]
+\centering
+\footnotesize
+\begin{tabular}{|l|l|l|l|}
+\hline
+\multirow{2}{*}{} & \multicolumn{3}{c|}{Dataset} \\ \cline{2-4} 
+ & Twitter (Alan Ritter) & CoNLL (Reuter Corpus) & \#MSM2013 \\ \hline
+LOC & 534 (1.15 \%)& 8297 (4.07 \%)& 795 (1.53 \%)\\ \hline
+MISC & 690 (1.48 \%)& 4593 (2.26 \%)& 511 (0.98 \%)\\ \hline
+ORG & 458 (0.99 \%)& 10025 (4.92 \%)& 842 (1.62 \%)\\ \hline
+PER & 780 (1.68 \%)& 11128 (5.47 \%)& 2961 (5.68 \%)\\ \hline
+O & 44007 (94.70 \%)& 169578 (83.28 \%)& 47015 (90.20 \%)\\ \hline
+\end{tabular}
+\caption[Dataset with Joint NER Tags]{Dataset with Joint NER Tags}
+\label{tab:data-joint-ner}
+\end{table}
+
+\section{Addressed Tasks and Compared Tools}
+
+In order to evaluate how good standard NLP tools perform against different kinds of text, such as noisy text from social networks and formal text from newspapers, we performed a set of experiments where the performance in common NLP tasks was analysed. The addressed tasks were \textbf{tokenization}, \textbf{POS-tagging}, \textbf{chunking} and \textbf{NER}, as described in section \ref{nlp_tasks}. 
+
+The tools compared in this phase were trained for English and are open, well-known and widely used by the NLP community. Moreover, they were developed either in Java or Python, which, nowadays, are probably the two languages more frequently used to develop NLP applications and for which there is a broader range of available toolkits. The compared tools were the following: \textbf{NLTK toolkit}\footnote{\url{http://www.nltk.org}}, \textbf{Apache OpenNLP\footnote{\url{https://opennlp.apache.org}}}, \textbf{Stanford CoreNLP}\footnote{\url{http://stanfordnlp.github.io/CoreNLP}}, \textbf{Pattern}\footnote{\url{http://www.clips.ua.ac.be/pages/pattern}}, \textbf{Alan Ritter's TwitterNLP}\footnote{\url{https://github.com/aritter/twitter_nlp}},\textbf{CMU's TweetNLP}\footnote{\url{http://www.cs.cmu.edu/~ark/TweetNLP}} and \textbf{TwitIE}\footnote{\url{https://gate.ac.uk/wiki/twitie.html}}, as described in section \ref{nlp_tools}
+
+\section{Comparison Results}
+
+This section reports on the results obtained when performing the addressed tasks on the gold standard datasets, presented earlier, using each toolkit.
+Tables \ref{tab:performance_tokenization}, \ref{tab:performance_pos}, \ref{tab:performance_chunking}, \ref{tab:performance_ner} and \ref{tab:performance_nec} show the precision~(P), the recall~(R) and the $F_1$-scores for each scenario.
+The presented results are macro averages, i.e., we computed the precision, recall and $F_1$ for each document (tweet or news) and then averaged the results. The standard deviations associated with the computed macro-averages ($\sigma$) are also presented. 
+Micro averages were not computed because we were more interested in assessing the toolkits performance in different documents and not to use the whole corpus as a large document, which would lower the impact of less frequent tags.
+
+More precisely, each table targets a different task, lines have the results for each tool and there are three columns per corpus~(P, R and $F_1$).
+Table \ref{tab:performance_tokenization} targets tokenization, table~\ref{tab:performance_pos} POS-tagging, and table~\ref{tab:performance_chunking} chunking.
+Tables~\ref{tab:performance_ner} and~\ref{tab:performance_nec} show two different NER results: entity identification~(NER) only considers the delimitation of a named entities, while entity classification~(hereafter, NEC) also considers its given type.
+Table \ref{tab:performance_nec} has an additional line with the results of the best performing system that participated in the CoNLL-2003 shared task~\cite{FlorianConll2003}, which combined four different classifiers (robust linear classifier, maximum  entropy, transformation-based learning and a hidden Markov model), resulting in $F_1=89\%$ in named entity classification~(NEC). 
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+Task & \multicolumn{6}{c|}{Tokenization} \\ \hline
+Data set & \multicolumn{3}{c|}{CoNLL} & \multicolumn{3}{c|}{Alan Ritter - Twitter} \\ \hline
+{\backslashbox{Tool}{Metric}} & P $\pm$ $\sigma$  & R $\pm$ $\sigma$& F1 $\pm$ $\sigma$& P $\pm$ $\sigma$& R $\pm$ $\sigma$& F1 $\pm$ $\sigma$\\ \hline
+NLTK & 0.95 $\pm$ 0.11 & 0.96$\pm$ 0.10& 0.95 $\pm$ 0.11& 0.83 $\pm$ 0.14 & 0.91 $\pm$ 0.09& 0.87 $\pm$ 0.12  \\ \hline
+OpenNLP & \textbf{0.99 $\pm$ 0.02}  & \textbf{0.99 $\pm$ 0.01}  & \textbf{0.99 $\pm$ 0.02} & 0.92 $\pm$ 0.11 &  0.96 $\pm$ 0.06 &  0.94 $\pm$ 0.08 \\ \hline
+CoreNLP & 0.73 $\pm$ 0.31 & 0.73 $\pm$ 0.31& 0.73 $\pm$ 0.31& 0.93 $\pm$ 0.13 & 0.95 $\pm$ 0.11 & 0.94 $\pm$ 0.12 \\ \hline
+Pattern & 0.42 $\pm$ 0.30 &  0.41 $\pm$ 0.29 & 0.42 $\pm$ 0.29 &  0.76 $\pm$ 0.21 &  0.78 $\pm$ 0.20 & 0.77 $\pm$ 0.20  \\ \hline
+TweetNLP & 0.97$ \pm$ 0.05& 0.98 $\pm$ 0.02& 0.98 $\pm$ 0.04 & \textbf{0.96 $\pm$ 0.07} & \textbf{0.98 $\pm$ 0.05}& \textbf{0.97 $\pm$ 0.06} \\ \hline
+TwitterNLP & 0.95 $\pm$ 0.10 & 0.97 $\pm$ 0.09 & 0.96 $\pm$ 0.10 & \textbf{0.96 $\pm$ 0.07} & 0.97 $\pm$ 0.05& 0.96 $\pm$ 0.06\\ \hline
+TwitIE & 0.85 $\pm$ 0.15 & 0.93 $\pm$ 0.11 & 0.89 $\pm$ 0.14 & 0.83 $\pm$ 0.16 & 0.89 $\pm$ 0.11 & 0.86 $\pm$ 0.13 \\ \hline
+\end{tabular}
+}
+\caption[Tokenization Performance Results]{Tokenization Performance Results}
+\label{tab:performance_tokenization}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+Task  & \multicolumn{6}{c|}{PoS Tagging} \\ \hline
+Data set & \multicolumn{3}{c|}{CoNLL} & \multicolumn{3}{c|}{Alan Ritter - Twitter} \\ \hline
+{\backslashbox{Tool}{Metric}} & P $\pm$ $\sigma$  & R $\pm$ $\sigma$& F1 $\pm$ $\sigma$& P $\pm$ $\sigma$& R $\pm$ $\sigma$& F1 $\pm$ $\sigma$\\ \hline
+NLTK & 0.65 $\pm$ 0.19 & 0.71 $\pm$ 0.18 & 0.68 $\pm$ 0.18  & 0.65 $\pm$ 0.19 & 0.71 $\pm$ 0.18 & 0.68 $\pm$ 0.18\\ \hline
+OpenNLP & \textbf{0.88 $\pm$ 0.10} & \textbf{0.88 $\pm$ 0.09} &  \textbf{0.88 $\pm$ 0.10}  & 0.70 $\pm$ 0.18 & 0.73 $\pm$ 0.17 & 0.71 $\pm$ 0.17 \\ \hline
+CoreNLP & 0.67 $\pm$ 0.29 & 0.67 $\pm$ 0.29 & 0.67 $\pm$ 0.29 & 0.70 $\pm$ 0.19 & 0.71 $\pm$ 0.18 & 0.71 $\pm$ 0.18 \\ \hline
+Pattern & 0.36 $\pm$ 0.24  & 0.35 $\pm$ 0.24 & 0.35 $\pm$ 0.24& 0.61 $\pm$ 0.21 & 0.62 $\pm$ 0.21 & 0.61 $\pm$ 0.20\\ \hline
+TweetNLP & 0.83 $\pm$ 0.10& 0.84 $\pm$ 0.09& 0.84 $\pm$ 0.09 & \textbf{0.94 $\pm$ 0.08} & \textbf{0.96 $\pm$ 0.06} & \textbf{0.95 $\pm$ 0.07}\\ \hline
+TwitterNLP & 0.83 $\pm$ 0.15 & 0.84 $\pm$ 0.15 & 0.83 $\pm$ 0.15 & 0.92 $\pm$ 0.11& 0.93 $\pm$ 0.11 & 0.92 $\pm$ 0.11\\ \hline
+TwitIE & 0.78 $\pm$ 0.16 & 0.85 $\pm$ 0.12 & 0.82 $\pm$ 0.14 & 0.78 $\pm$ 0.17 & 0.84 $\pm$ 0.13 & 0.81 $\pm$ 0.14 \\ \hline
+\end{tabular}
+}
+\caption[PoS Performance Results]{PoS Performance Results}
+\label{tab:performance_pos}
+\end{table}
+
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+Task  & \multicolumn{6}{c|}{Chunking} \\ \hline
+Data set & \multicolumn{3}{c|}{CoNLL} & \multicolumn{3}{c|}{Alan Ritter - Twitter} \\ \hline
+{\backslashbox{Tool}{Metric}} & P $\pm$ $\sigma$  & R $\pm$ $\sigma$& F1 $\pm$ $\sigma$& P $\pm$ $\sigma$& R $\pm$ $\sigma$& F1 $\pm$ $\sigma$\\ \hline
+NLTK & 0.70 $\pm$ 0.10& 0.71 $\pm$ 0.10 & 0.71 $\pm$ 0.10 & 0.51 $\pm$ 0.16 & 0.56 $\pm$ 0.16 & 0.54 $\pm$ 0.16 \\ \hline
+OpenNLP & \textbf{0.83 $\pm$ 0.13} & \textbf{0.83 $\pm$ 0.12} & \textbf{0.83 $\pm$ 0.12} & 0.44 $\pm$ 0.34 & 0.46 $\pm$ 0.36 & 0.45 $\pm$ 0.39\\ \hline
+CoreNLP &  n/a  &  n/a  &  n/a &  n/a  &  n/a  &  n/a  \\ \hline
+Pattern & 0.33 $\pm$ 0.22 &  0.32 $\pm$ 0.21&  0.33 $\pm$ 0.21 & 0.54  $\pm$ 0.21 &  0.56 $\pm$ 0.20 & 0.55 $\pm$ 0.20\\ \hline
+TweetNLP & n/a &  n/a &  n/a  & n/a &  n/a &  n/a \\ \hline
+TwitterNLP & 0.82 $\pm$ 0.13 & 0.84 $\pm$ 0.12 & 0.83 $\pm$ 0.13 & \textbf{0.90 $\pm$ 0.12} & \textbf{0.91 $\pm$ 0.11}& \textbf{0.90 $\pm$ 0.11}\\ \hline
+TwitIE & n/a  &  n/a  &  n/a & n/a  &  n/a  &  n/a  \\ \hline
+\end{tabular}
+}
+\caption[Chunking Performance Results]{Chunking  Performance Results}
+\label{tab:performance_chunking}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+Task  & \multicolumn{6}{c|}{NER} \\ \hline
+Data set & \multicolumn{3}{c|}{CoNLL} & \multicolumn{3}{c|}{Alan Ritter - Twitter} \\ \hline
+{\backslashbox{Tool}{Metric}} & P $\pm$ $\sigma$  & R $\pm$ $\sigma$& F1 $\pm$ $\sigma$& P $\pm$ $\sigma$& R $\pm$ $\sigma$& F1 $\pm$ $\sigma$ \\ \hline
+NLTK  & 0.88 $\pm$ 0.12 & 0.89 $\pm$  0.11 & 0.89 $\pm$ 0.11 & 0.77 $\pm$ 0.16 & 0.84 $\pm$  0.13 &  0.80 $\pm$ 0.15\\ \hline
+OpenNLP & \textbf{0.88 $\pm$ 0.09} & 0.88 $\pm$ 0.08 & \textbf{0.88 $\pm$ 0.08}  & 0.85 $\pm$ 0.14 & 0.90 $\pm$ 0.11 & 0.87 $\pm$ 0.12\\ \hline
+CoreNLP & 0.70 $\pm$ 0.30 & 0.70 $\pm$ 0.30 & 0.70 $\pm$ 0.30 & 0.87 $\pm$ 0.15 & 0.89 $\pm$ 0.14 & 0.88 $\pm$ 0.15\\ \hline
+Pattern &  n/a  &  n/a  &  n/a & n/a  &  n/a  &  n/a \\ \hline
+TweetNLP &  n/a  &  n/a  &  n/a & n/a  &  n/a  &  n/a \\ \hline
+TwitterNLP  & 0.88 $\pm$ 0.11 & \textbf{0.89 $\pm$ 0.10} & 0.88 $\pm$ 0.11 & \textbf{0.96 $\pm$ 0.07} & \textbf{0.97 $\pm$ 0.05} & \textbf{0.97 $\pm$ 0.06} \\ \hline
+TwitIE &  0.74 $\pm$ 0.16 & 0.80 $\pm$ 0.14 &  0.77 $\pm$ 0.15 & 0.77 $\pm$ 0.17 & 0.83 $\pm$ 0.14 & 0.80 $\pm$ 0.15\\ \hline
+\end{tabular}
+}
+\caption[NER Performance Results]{NER Performance Results}
+\label{tab:performance_ner}
+\end{table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+Task  & \multicolumn{6}{c|}{NEC} \\ \hline
+Data set & \multicolumn{3}{c|}{CoNLL} & \multicolumn{3}{c|}{Alan Ritter - Twitter} \\ \hline
+{\backslashbox{Tool}{Metric}} & P $\pm$ $\sigma$& R $\pm$ $\sigma$& F1 $\pm$ $\sigma$ & P $\pm$ $\sigma$& R $\pm$ $\sigma$& F1 $\pm$ $\sigma$\\ \hline
+NLTK & 0.84 $\pm$ 0.12&  0.84 $\pm$  0.12 &  0.84 $\pm$ 0.12  &  0.75 $\pm$ 0.17 & 0.83 $\pm$ 0.14 & 0.79 $\pm$ 0.15 \\ \hline
+OpenNLP  & \textbf{0.87 $\pm$ 0.10} & \textbf{0.87 $\pm$ 0.09} & \textbf{0.87 $\pm$ 0.09} & 0.85 $\pm$ 0.15 & 0.89 $\pm$ 0.12 & 0.87 $\pm$ 0.13 \\ \hline
+CoreNLP  & 0.70 $\pm$ 0.30 & 0.70 $\pm$ 0.30 & 0.70 $\pm$ 0.30 & 0.87 $\pm$ 0.16 & 0.89 $\pm$ 0.14 & 0.88 $\pm$ 0.15 \\ \hline
+Pattern &  n/a  &  n/a  &  n/a & n/a  &  n/a  &  n/a \\ \hline
+TweetNLP &  n/a  &  n/a  &  n/a & n/a  &  n/a  &  n/a \\ \hline
+TwitterNLP & 0.84 $\pm$ 0.13& 0.85 $\pm$ 0.12 & 0.85 $\pm$ 0.12 & \textbf{0.95 $\pm$ 0.08} & \textbf{0.96 $\pm$ 0.07} & \textbf{0.95 $\pm$ 0.08} \\ \hline
+TwitIE & 0.73 $\pm$ 0.17 & 0.80 $\pm$ 0.14 & 0.76 $\pm$ 0.16 & 0.77 $\pm$ 0.17 & 0.84 $\pm$ 0.14 & 0.80 $\pm$ 0.15\\ \hline
+Florian et al. & 0.89  &  0.89  & 0.89  $\pm$ 0.70 & n/a  &  n/a  &  n/a \\ \hline
+\end{tabular}
+}
+\caption[NEC Performance Results]{NEC Performance Results}
+\label{tab:performance_nec}
+\end{table}
+
+On the CoNLL dataset, which uses formal language, standard toolkits perform well. OpenNLP excels with $F_1=99\%$ in tokenization, 88\% in POS-tagging and 83\% in chunking. 
+In the NER task, NLTK~(89\%) and OpenNLP~(88\%) performed closely. 
+TwitterNLP also performed well in this dataset. This is not that surprising if we add that the CoNLL-2003 dataset was one of the corpora TwitterNLP was trained on~\cite{Ritter2011TwitterNLP}, and it is probably also tuned for this corpus.
+
+As expected, the performance of standard toolkits, developed with formal text in mind, decreases when used in the social network corpora. This difference is between 5-8\% for tokenization, 17\% for POS-tagging, 17-40\% for chunking, or 5-18\% for NER. This is not the case of Pattern, which performs poorly in the CoNLL corpus but improves significantly when tokenizing, PoS tagging and chunking the Twitter corpora.
+Although not developed specifically for Twitter, OpeNLP and CoreNLP still obtain interesting results for tokenization and NER in its corpus~($F_1 > 80\%$).
+
+Also as expected, in the Twitter corpus, the Twitter-oriented toolkits performed better than the others. TweetNLP was the best in the tokenization~(97\%) and POS-tagging~(95\%) tasks.
+TwitterNLP performed closely~(96\% and 92\%). In the case of TwitIE, the difference of performance in different types of text was not relevant.
+Once again, it should be highlighted that TwitterNLP was trained with the Twitter corpus, so this comparison is not completely fair.
+This is also why we used an additional corpus, \#MSM2013, which covers social network text.
+The results of the NER task in this corpus, shown in table~\ref{tab:performance_nernec_msm2013}, confirm the good performance of TwitterNLP.
+In the last line of the previous table, we also present the official results of the best system that participated in the \#MSM2013 Concept Extraction Task, Habib et al.\citep{habibCE2013}, which apparently underperformed TwitterNLP.
+Habib et al. combined Conditional Random Fields with Support Vector Machines for recognition and, for classification, each entity was disambiguated and linked to its Wikipedia article, where the category was extracted from.
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+Data set & \multicolumn{6}{c|}{\#MSM2013 - Twitter} \\ \hline
+Task &  \multicolumn{3}{c|}{NER}  & \multicolumn{3}{c|}{NEC} \\ \hline
+{\backslashbox{Tool}{Metric}} & P $\pm$ $\sigma$& R $\pm$ $\sigma$& F1 $\pm$ $\sigma$ & P $\pm$ $\sigma$& R $\pm$ $\sigma$& F1 $\pm$ $\sigma$\\ \hline
+NLTK &  0.83 $\pm$ 0.16 &  0.83 $\pm$ 0.16 & 0.83 $\pm$ 0.14 & 0.85 $\pm$ 0.14 & 0.85 $\pm$ 0.15 & 0.85 $\pm$ 0.13\\ \hline
+OpenNLP & 0.83 $\pm$ 0.14 & 0.86 $\pm$ 0.14 & 0.85 $\pm$ 0.14 & 0.84 $\pm$ 0.14 & 0.86 $\pm$ 0.13 & 0.85 $\pm$ 0.13\\ \hline
+CoreNLP &  0.73 $\pm$ 0.19 & 0.83 $\pm$ 0.16 & 0.78 $\pm$ 0.16 & 0.73 $\pm$ 0.19 & 0.84 $\pm$ 0.16 & 0.78 $\pm$ 0.16\\ \hline
+Pattern &  n/a  &  n/a  &  n/a & n/a  &  n/a  &  n/a \\ \hline
+TweetNLP &  n/a  &  n/a  &  n/a & n/a  &  n/a  &  n/a \\ \hline
+TwitterNLP & \textbf{0.90 $\pm$ 0.12} &  \textbf{0.90 $\pm$ 0.12} & \textbf{0.90 $\pm$ 0.12} & \textbf{0.91 $\pm$ 0.11} & \textbf{0.91 $\pm$ 0.11} & \textbf{0.91 $\pm$ 0.11}\\ \hline
+TwitIE & 0.61 $\pm$ 0.20 & 0.73 $\pm$ 0.18 & 0.66 $\pm$ 0.18 & 0.61 $\pm$ 0.20 & 0.73 $\pm$ 0.17 & 0.66 $\pm$ 0.18\\ \hline
+Habib et al. & 0.72 & 0.80 & 0.76 & 0.65 & 0.73 & 0.69\\
+\hline
+\end{tabular}
+}
+\caption[NEC/NER Performance Results on the \#MSM2013 Data set]{NER/NEC Performance Results on the \#MSM2013 Data set}
+\label{tab:performance_nernec_msm2013}
+\end{table}
+
+\section{Discussion}
+
+The results suggest that OpenNLP is the best choice for news text, and TwitterNLP for social media text. Giving the fact that we are mostly dealing with social media text, in this work we decided to use TweetNLP for the extraction of PoS tags and TwitterNLP for the extraction of chunking and name entitiy tags, since they provided the best results.
+Although the latter result was biased on the Twitter corpus, where TwitterNLP was trained on, we also tested it on another corpus, where it got the best results.
+It should be noticed that we ended up using datasets that were more appropriate for specific tasks. For instance, although its text of the CoNLL-2003 dataset is tokenized, POS-tagged, and chunked, it was specifically developed for a NER shared task. On the other hand, we did not use the CoNLL-2000, developed for a chunking shared task. Although this dataset was used to train some of the OpenNLP models, we should also consider its results in the future.
+
+As expected, standard toolkits perform better in formal texts, while Twitter-oriented tools got better results in social media text.
+Besides helping us to make a selection, we believe that these results might be useful for potential users willing to select the most appropriate tools for their specific purposes, especially if they do not have time or expertise to train new models.
+Of course, we did not use all the available tools, especially those available as web services, but we tried to cover an acceptable range of widely used toolkits that cover several NLP tasks and developed in two programming languages with a large community -- Java and Python.
+We also regard that, with more available manually annotated datasets, either with formal or informal language, we could always re-train some of the available models and possibly increase the performance achieved with most of the tested tools.
+
+These initial experiments helped laying the ground work for the next stage of this work, i.e., they helped extracting quality features needed for the relevance classification tasks.  
